@@ -1,0 +1,6 @@
+storage/logs/*.log
+storage/backups/*.sql
+storage/uploads/*
+!storage/logs/.gitkeep
+!storage/backups/.gitkeep
+!storage/uploads/.gitkeep
