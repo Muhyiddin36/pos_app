@@ -71,7 +71,10 @@ awal: [`database/seed.sql`](database/seed.sql).
     ├── INSTALLATION.md           # Panduan instalasi di shared hosting
     ├── ERD.md                     # Desain database
     ├── API.md                      # Dokumentasi endpoint internal (AJAX)
-    └── USER_GUIDE.md                # Panduan penggunaan per role
+    ├── USER_GUIDE.md                # Panduan penggunaan per role (ringkas)
+    ├── JUKNIS_SUPER_ADMIN.md          # Juknis operasional lengkap - Super Admin
+    ├── JUKNIS_ADMIN_CABANG.md          # Juknis operasional lengkap - Admin Cabang
+    └── JUKNIS_KASIR.md                  # Juknis operasional lengkap - Kasir
 ```
 
 ## 4. Desain UI/UX
@@ -112,6 +115,7 @@ awal: [`database/seed.sql`](database/seed.sql).
 - [`docs/ERD.md`](docs/ERD.md) — desain database & ERD.
 - [`docs/API.md`](docs/API.md) — dokumentasi endpoint internal (dipakai oleh JavaScript kasir).
 - [`docs/USER_GUIDE.md`](docs/USER_GUIDE.md) — panduan penggunaan per modul & per role.
+- [`docs/JUKNIS_SUPER_ADMIN.md`](docs/JUKNIS_SUPER_ADMIN.md), [`docs/JUKNIS_ADMIN_CABANG.md`](docs/JUKNIS_ADMIN_CABANG.md), [`docs/JUKNIS_KASIR.md`](docs/JUKNIS_KASIR.md) — petunjuk teknis operasional langkah-demi-langkah, masing-masing terpisah per role, siap dicetak/dibagikan ke tim operasional.
 
 ## 7. Login Default (setelah import `seed.sql`)
 
