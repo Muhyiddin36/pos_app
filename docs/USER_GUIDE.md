@@ -133,21 +133,34 @@ modal/jual per provider) dikelola terpisah melalui tombol **Kelola Produk**
 1. Menu **Saldo Kas Harian** menampilkan daftar sumber dana aktif cabang
    (mis. Kas Tunai, Saldo Bank, Gopay Merchant) untuk tanggal yang dipilih
    (default hari ini).
-2. Setiap sumber dana menampilkan **Saldo Awal** (referensi, hanya bisa diatur
-   Super Admin) dan kolom **Saldo Akhir** yang bisa diisi/diedit oleh Kasir
-   atau Admin Cabang.
+2. Setiap sumber dana menampilkan **Saldo Awal** dan kolom **Saldo Akhir**
+   yang bisa diisi/diedit oleh Kasir atau Admin Cabang.
+   - **Saldo Awal berjalan otomatis (rolling)**: begitu Kasir men-submit saldo
+     akhir pada suatu hari, angka tersebut otomatis menjadi **saldo awal**
+     untuk hari berikutnya. Nilai **saldo awal** yang diatur Super Admin di
+     menu **Kelola Sumber Dana** hanya dipakai sebagai titik awal saat sumber
+     dana pertama kali dibuat (sebelum ada catatan harian sama sekali).
 3. Isi angka hasil hitung fisik (kas tunai di laci, saldo rekening bank, saldo
    Gopay Merchant, dst.) untuk setiap sumber dana, tambahkan catatan bila ada
    selisih, lalu klik **Simpan Saldo Kas**.
 4. Data dapat diedit berulang kali pada hari yang sama (mis. jika di-cross
    check ulang) — setiap penyimpanan menimpa nilai sebelumnya untuk tanggal
    dan sumber dana yang sama.
-5. Tabel **Riwayat Saldo Kas** di bawahnya menampilkan histori tercatat,
+5. **Kasir hanya bisa mengisi/mengubah saldo untuk hari ini.** Tanggal pada
+   form input terkunci ke hari berjalan dan tidak bisa diganti oleh Kasir.
+6. **Perbaikan tanggal lampau** *(khusus izin `cash.correct` — Admin Cabang
+   dan Super Admin)*: jika terjadi kesalahan input pada hari-hari sebelumnya,
+   Admin Cabang atau Super Admin dapat memilih tanggal lampau melalui
+   pemilih tanggal (yang muncul khusus untuk mereka) lalu menyimpan ulang
+   angka yang benar. Karena saldo awal berjalan otomatis, perbaikan ini akan
+   otomatis memperbarui saldo awal hari-hari setelahnya tanpa perlu
+   mengubah data satu per satu.
+7. Tabel **Riwayat Saldo Kas** di bawahnya menampilkan histori tercatat,
    dapat difilter per rentang tanggal.
-6. **Kelola Sumber Dana** (tombol di pojok kanan atas, khusus izin
+8. **Kelola Sumber Dana** (tombol di pojok kanan atas, khusus izin
    `cash.manage`/Super Admin) — menambah sumber dana baru, mengubah nama/
-   keterangan, dan mengatur **saldo awal**. Kasir dan Admin Cabang tidak
-   melihat tombol ini.
+   keterangan, dan mengatur **saldo awal** pertama kali. Kasir dan Admin
+   Cabang tidak melihat tombol ini.
 
 ## 12. Laporan
 

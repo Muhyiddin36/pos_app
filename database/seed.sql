@@ -71,6 +71,7 @@ INSERT INTO permissions (code, module, name) VALUES
 ('service.manage',      'service',   'Kelola Status, Biaya & Pembayaran Servis HP'),
 ('cash.view',           'cash',      'Lihat Saldo Kas'),
 ('cash.record',         'cash',      'Input/Ubah Saldo Akhir Kas Harian'),
+('cash.correct',        'cash',      'Perbaiki Saldo Kas Tanggal Lampau (Admin Cabang/Super Admin)'),
 ('cash.manage',         'cash',      'Kelola Sumber Dana & Saldo Awal (Super Admin)');
 
 -- Super Admin => seluruh permission
@@ -90,7 +91,7 @@ SELECT 2, id FROM permissions WHERE code IN (
     'loan.view','loan.create','loan.manage',
     'bank.view','bank.create','bank.void','bank.manage',
     'service.view','service.create','service.manage',
-    'cash.view','cash.record',
+    'cash.view','cash.record','cash.correct',
     'reports.view','reports.profit',
     'audit.view'
 );

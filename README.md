@@ -69,7 +69,8 @@ awal: [`database/seed.sql`](database/seed.sql).
 │   ├── schema.sql               # Struktur seluruh tabel (InnoDB + FK)
 │   ├── seed.sql                  # Role/permission/akun awal + contoh data
 │   ├── upgrade_2026_bank_service_ewallet.sql  # Migrasi tambahan untuk instalasi lama (lihat §6)
-│   └── upgrade_2026_saldo_kas.sql              # Migrasi tambahan modul Saldo Kas Harian (lihat §6)
+│   ├── upgrade_2026_saldo_kas.sql              # Migrasi tambahan modul Saldo Kas Harian (lihat §6)
+│   └── upgrade_2026_saldo_kas_rolling.sql      # Migrasi tambahan saldo awal rolling + cash.correct (lihat §6)
 ├── storage/
 │   ├── backups/                 # Hasil backup database (writable)
 │   ├── logs/                     # Log error PHP (writable)
@@ -130,6 +131,7 @@ awal: [`database/seed.sql`](database/seed.sql).
 > berulang kali dan tidak akan menduplikasi data:
 > - [`database/upgrade_2026_bank_service_ewallet.sql`](database/upgrade_2026_bank_service_ewallet.sql) — Transfer/Setor Bank, Servis HP, Top Up E-Wallet.
 > - [`database/upgrade_2026_saldo_kas.sql`](database/upgrade_2026_saldo_kas.sql) — Saldo Kas Harian.
+> - [`database/upgrade_2026_saldo_kas_rolling.sql`](database/upgrade_2026_saldo_kas_rolling.sql) — Saldo awal Saldo Kas Harian berjalan otomatis (rolling) + izin `cash.correct`.
 >
 > Instalasi baru tidak perlu file-file ini karena `schema.sql`/`seed.sql` sudah mencakup semuanya.
 

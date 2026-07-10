@@ -202,11 +202,20 @@ sesuai dengan catatan sistem.
 5. Bila ada selisih dengan yang seharusnya, tulis penjelasan singkat di kolom **Catatan**.
 6. Klik **Simpan Saldo Kas**.
 
-> **Catatan penting**: Anda hanya bisa mengisi/mengedit kolom **Saldo Akhir**.
-> Kolom **Saldo Awal** hanya ditampilkan sebagai referensi (readonly) dan
-> hanya bisa diubah oleh Super Admin. Anda juga tidak bisa menambah sumber
-> dana baru — bila ada rekening/e-wallet baru yang perlu dicatat, minta
-> Admin Cabang/Super Admin menambahkannya lewat **Kelola Sumber Dana**.
+> **Catatan penting**:
+> - Anda hanya bisa mengisi/mengedit kolom **Saldo Akhir**, dan **hanya untuk
+>   hari ini** — tanggal pada form ini terkunci ke hari berjalan dan tidak
+>   bisa diganti ke tanggal lain.
+> - **Saldo Awal berjalan otomatis**: saldo akhir yang Anda submit hari ini
+>   akan otomatis menjadi **Saldo Awal** untuk hari berikutnya. Anda tidak
+>   perlu (dan tidak bisa) mengubah angka Saldo Awal secara manual.
+> - Anda juga tidak bisa menambah sumber dana baru. Bila ada rekening/e-wallet
+>   baru yang perlu dicatat, minta Admin Cabang/Super Admin menambahkannya
+>   lewat **Kelola Sumber Dana**.
+> - Jika Anda salah input pada **hari-hari sebelumnya**, Anda **tidak bisa**
+>   memperbaikinya sendiri — laporkan ke Admin Cabang atau Super Admin, karena
+>   perbaikan tanggal lampau hanya bisa dilakukan oleh mereka (dan otomatis
+>   memperbaiki saldo awal hari-hari sesudahnya).
 
 Anda bisa membuka kembali menu ini kapan saja pada hari yang sama untuk
 memperbaiki angka bila ternyata ada koreksi — data yang tersimpan terakhir

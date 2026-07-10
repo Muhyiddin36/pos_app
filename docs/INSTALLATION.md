@@ -41,6 +41,7 @@ dan **MySQL/MariaDB**, yang tersedia di hampir semua paket hosting cPanel.
 > phpMyAdmin pada database yang sudah berjalan:
 > - `database/upgrade_2026_bank_service_ewallet.sql` (sebelum modul Transfer/Setor Bank, Servis HP, Top Up E-Wallet ditambahkan)
 > - `database/upgrade_2026_saldo_kas.sql` (sebelum modul Saldo Kas Harian ditambahkan)
+> - `database/upgrade_2026_saldo_kas_rolling.sql` (sebelum saldo awal Saldo Kas Harian berjalan otomatis/rolling ditambahkan)
 
 ## 5. Konfigurasi Koneksi Database
 

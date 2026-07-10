@@ -28,6 +28,7 @@
 <div class="card">
     <div class="card-header">
         <h3>Input Saldo Akhir</h3>
+        <?php if (Auth::can('cash.correct')): ?>
         <form method="get" action="<?= e(url('cash/index')) ?>" class="flex gap-sm" style="align-items:end;">
             <?php if (Auth::isSuperAdmin() && $selectedBranchId !== null): ?><input type="hidden" name="branch_id" value="<?= (int) $selectedBranchId ?>"><?php endif; ?>
             <div class="form-group mb-0">
@@ -35,6 +36,19 @@
                 <input type="date" name="record_date" value="<?= e($date) ?>" onchange="this.form.submit()">
             </div>
         </form>
+        <?php else: ?>
+            <span class="badge badge-gray">Hari ini, <?= e(tgl($date)) ?></span>
+        <?php endif; ?>
+    </div>
+    <div class="card-body" style="padding-bottom:0;">
+        <p class="text-muted mb-0">
+            Saldo awal setiap sumber dana berjalan otomatis mengikuti saldo akhir yang disimpan pada hari sebelumnya.
+            <?php if (Auth::can('cash.correct')): ?>
+                Sebagai Admin Cabang/Super Admin, Anda dapat memperbaiki saldo akhir pada tanggal yang sudah lewat bila terjadi kesalahan input — perbaikan ini otomatis memperbarui saldo awal hari setelahnya.
+            <?php else: ?>
+                Anda hanya dapat mengisi/mengubah saldo akhir untuk hari ini. Jika ada kesalahan pada tanggal sebelumnya, mintalah Admin Cabang atau Super Admin untuk memperbaikinya.
+            <?php endif; ?>
+        </p>
     </div>
 
     <?php if ($selectedBranchId === null): ?>
@@ -45,6 +59,7 @@
         <form method="post" action="<?= e(url('cash/store')) ?>">
             <?= Csrf::field() ?>
             <input type="hidden" name="record_date" value="<?= e($date) ?>">
+            <?php if (Auth::isSuperAdmin()): ?><input type="hidden" name="branch_id" value="<?= (int) $selectedBranchId ?>"><?php endif; ?>
             <div class="table-wrap">
                 <table>
                     <thead>

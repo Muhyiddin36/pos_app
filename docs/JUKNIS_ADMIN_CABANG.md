@@ -232,15 +232,27 @@ Menu sidebar: **Saldo Kas Harian**.
 1. Setiap tutup toko (atau kapan pun diperlukan), buka menu ini untuk melihat
    daftar sumber dana cabang Anda (mis. Kas Tunai, Saldo Bank, Gopay Merchant).
 2. Hitung fisik/cek saldo aktual masing-masing sumber, lalu isi kolom **Saldo
-   Akhir** untuk tiap baris. Kolom **Saldo Awal** hanya referensi (diatur Super Admin).
+   Akhir** untuk tiap baris.
 3. Tambahkan **Catatan** bila ada selisih atau hal yang perlu dijelaskan.
 4. Klik **Simpan Saldo Kas**. Anda bisa mengedit ulang nilai untuk tanggal
    yang sama kapan pun — data terakhir yang menimpa yang lama.
-5. Gunakan tanggal di bagian atas untuk mengisi/mengoreksi hari sebelumnya
-   bila terlewat, dan tabel **Riwayat Saldo Kas** untuk meninjau catatan lama.
+
+**Saldo Awal berjalan otomatis (rolling)**: saldo akhir yang disimpan Kasir
+pada suatu hari otomatis menjadi **Saldo Awal** untuk hari berikutnya. Anda
+tidak perlu menghitung/mengisi Saldo Awal secara manual setiap hari.
+
+**Perbaikan tanggal lampau** *(khusus wewenang Anda dan Super Admin, izin
+`cash.correct` — Kasir tidak memilikinya)*: jika Kasir salah input pada hari
+sebelumnya, gunakan pemilih tanggal di bagian atas form untuk berpindah ke
+tanggal yang bermasalah, lalu simpan ulang angka yang benar. Karena Saldo
+Awal berjalan otomatis, perbaikan ini akan otomatis memperbaiki Saldo Awal
+hari-hari sesudahnya juga — Anda tidak perlu mengoreksi satu per satu.
+Gunakan tabel **Riwayat Saldo Kas** untuk meninjau catatan lama per rentang
+tanggal.
 
 > **Anda tidak bisa** menambah sumber dana baru atau mengubah **Saldo Awal**
-> — itu wewenang eksklusif Super Admin (lihat §14).
+> pertama kali (saat sumber dana dibuat) — itu wewenang eksklusif Super Admin
+> (lihat §14).
 
 ---
 

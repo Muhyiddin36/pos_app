@@ -9,6 +9,9 @@ final class CashController extends Controller
         $this->requirePermission('cash.view');
         $branchId = $this->resolveBranchId();
         $date = $this->get('record_date') ?: date('Y-m-d');
+        if ($date !== date('Y-m-d') && !Auth::can('cash.correct')) {
+            $date = date('Y-m-d');
+        }
         $from = $this->get('from');
         $to = $this->get('to');
 
@@ -29,12 +32,16 @@ final class CashController extends Controller
         $this->requirePermission('cash.record');
         $this->requireCsrf();
 
-        $branchId = $this->currentBranchId();
-        if ($branchId === null) {
-            $this->withError('Super Admin tidak dapat mencatat saldo kas langsung. Gunakan akun cabang.', 'cash/index');
+        $branchId = Auth::isSuperAdmin() ? (int) $this->post('branch_id') : $this->currentBranchId();
+        if ($branchId === null || $branchId <= 0) {
+            $this->withError('Cabang tidak valid. Pilih cabang terlebih dahulu.', 'cash/index');
         }
 
         $date = $this->post('record_date') ?: date('Y-m-d');
+        if ($date !== date('Y-m-d') && !Auth::can('cash.correct')) {
+            $this->withError('Anda hanya dapat mencatat saldo kas untuk tanggal hari ini. Hubungi Admin Cabang atau Super Admin untuk memperbaiki tanggal yang sudah lewat.', 'cash/index');
+        }
+
         $note = $this->post('note');
         $balances = (array) $this->postRaw('closing_balance', []);
 
@@ -54,8 +61,13 @@ final class CashController extends Controller
             $this->withError('Tidak ada saldo yang disimpan. Isi minimal satu sumber dana.', 'cash/index?record_date=' . $date);
         }
 
-        AuditLogger::log('cash', 'record', "Catat saldo kas harian tanggal {$date} ({$saved} sumber dana)");
-        $this->withSuccess('Saldo kas berhasil disimpan.', 'cash/index?record_date=' . $date);
+        $action = $date === date('Y-m-d') ? 'record' : 'correct';
+        AuditLogger::log('cash', $action, "Catat saldo kas harian tanggal {$date} ({$saved} sumber dana)");
+        $redirect = 'cash/index?record_date=' . $date;
+        if (Auth::isSuperAdmin()) {
+            $redirect .= '&branch_id=' . $branchId;
+        }
+        $this->withSuccess('Saldo kas berhasil disimpan.', $redirect);
     }
 
     // -------------------- Kelola Sumber Dana (khusus Super Admin) --------------------

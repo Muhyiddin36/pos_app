@@ -12,19 +12,30 @@ final class CashBalanceRecordModel extends Model
     /**
      * Ambil seluruh sumber dana aktif cabang beserta catatan saldo akhir pada
      * tanggal tertentu (LEFT JOIN - sumber tanpa catatan tetap tampil dengan closing_balance NULL).
+     *
+     * Saldo awal dihitung berjalan (rolling): saldo akhir hari sebelumnya yang
+     * terakhir tercatat menjadi saldo awal hari ini. Jika belum pernah ada
+     * catatan sebelumnya, dipakai saldo awal induk (diatur Super Admin saat
+     * sumber dana dibuat).
      */
     public static function forBranchAndDate(int $branchId, string $date): array
     {
-        $sql = 'SELECT cs.id AS cash_source_id, cs.name, cs.type, cs.opening_balance,
+        $sql = 'SELECT cs.id AS cash_source_id, cs.name, cs.type,
+                       COALESCE(
+                           (SELECT r2.closing_balance FROM cash_balance_records r2
+                            WHERE r2.cash_source_id = cs.id AND r2.record_date < :date1
+                            ORDER BY r2.record_date DESC LIMIT 1),
+                           cs.opening_balance
+                       ) AS opening_balance,
                        r.id AS record_id, r.closing_balance, r.note, r.updated_at,
                        u.full_name AS updated_by_name
                 FROM cash_sources cs
-                LEFT JOIN cash_balance_records r ON r.cash_source_id = cs.id AND r.record_date = :date
+                LEFT JOIN cash_balance_records r ON r.cash_source_id = cs.id AND r.record_date = :date2
                 LEFT JOIN users u ON u.id = r.updated_by
                 WHERE cs.branch_id = :branch_id AND cs.is_active = 1 AND cs.deleted_at IS NULL
                 ORDER BY cs.name';
         $stmt = Database::connection()->prepare($sql);
-        $stmt->execute(['branch_id' => $branchId, 'date' => $date]);
+        $stmt->execute(['branch_id' => $branchId, 'date1' => $date, 'date2' => $date]);
         return $stmt->fetchAll();
     }
 
