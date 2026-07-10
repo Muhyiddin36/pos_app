@@ -27,6 +27,7 @@ final class Router
         'loan'        => LoanController::class,
         'bank'        => BankController::class,
         'service'     => ServiceController::class,
+        'cash'        => CashController::class,
         'reports'     => ReportController::class,
         'backup'      => BackupController::class,
         'audit-log'   => AuditLogController::class,

@@ -111,6 +111,14 @@ Beberapa data dikelola terpusat oleh Super Admin dan dipakai bersama semua caban
   daftar bank yang bisa dipilih saat transaksi transfer/setor/tarik tunai
   (BCA, Mandiri, BNI, BRI, dll — sudah terisi otomatis dari `seed.sql`, tinggal
   tambah/nonaktifkan sesuai kebutuhan).
+- **Sumber Dana Saldo Kas** — menu **Saldo Kas Harian → Kelola Sumber Dana**.
+  **Ini wewenang eksklusif Super Admin** — Admin Cabang dan Kasir tidak bisa
+  menambah sumber dana baru maupun mengubah saldo awalnya, hanya mencatat
+  saldo akhir harian. Untuk setiap cabang, pastikan minimal ada sumber dana
+  **Kas Tunai** (fisik di laci), **Saldo Bank** (rekening operasional cabang),
+  dan sumber e-wallet merchant yang dipakai (mis. **Gopay Merchant**) — sudah
+  disiapkan otomatis untuk cabang pertama dari `seed.sql`, tambahkan manual
+  untuk cabang baru atau sumber dana lain yang dipakai cabang tsb.
 
 Untuk **Produk aksesoris per cabang** (stok fisik), Super Admin perlu memilih
 cabang dulu di menu **Produk** (dropdown "Pilih Cabang" muncul karena Super
@@ -203,8 +211,9 @@ catatan kaki struk cetak.
 | Harian | Buat & unduh Backup database |
 | Mingguan | Review Log Audit (transaksi void, login mencurigakan) |
 | Mingguan | Review Laporan Laba Rugi per cabang |
+| Mingguan | Cek Laporan Saldo Kas Harian — pastikan setiap cabang rutin mencatat |
 | Bulanan | Review daftar Pengguna aktif (nonaktifkan yang sudah resign) |
-| Saat ada cabang/karyawan baru | Tambah data Cabang & Pengguna terkait |
+| Saat ada cabang/karyawan baru | Tambah data Cabang, Pengguna, dan Sumber Dana Saldo Kas terkait |
 | Saat curiga password bocor | Ganti password sendiri & minta staf ganti juga |
 
 ---
@@ -218,6 +227,7 @@ catatan kaki struk cetak.
 | Laporan laba tidak muncul untuk Admin Cabang | Pastikan izin `reports.profit` masih dicentang di **Role & Hak Akses → Admin Cabang** |
 | Halaman error / tidak bisa diakses | Hubungi penyedia hosting untuk cek status server, atau lihat `storage/logs/php_error.log` |
 | Perlu memulihkan data yang terhapus tidak sengaja | Gunakan fitur **Restore** dari backup terakhir sebelum kejadian |
+| Cabang baru belum punya menu Saldo Kas Harian yang bisa diisi | Tambahkan sumber dananya dulu lewat **Saldo Kas Harian → Kelola Sumber Dana** |
 
 ---
 

@@ -20,6 +20,7 @@ $menuTransaksi = [
     ['label' => 'Servis HP', 'icon' => '&#128295;', 'route' => 'service/index', 'key' => 'service', 'perm' => 'service.view'],
     ['label' => 'Gadai Barang', 'icon' => '&#128274;', 'route' => 'pawn/index', 'key' => 'pawn', 'perm' => 'pawn.view'],
     ['label' => 'Pinjam Uang', 'icon' => '&#128176;', 'route' => 'loan/index', 'key' => 'loan', 'perm' => 'loan.view'],
+    ['label' => 'Saldo Kas Harian', 'icon' => '&#128179;', 'route' => 'cash/index', 'key' => 'cash', 'perm' => 'cash.view'],
 ];
 
 $menuMaster = [

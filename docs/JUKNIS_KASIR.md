@@ -4,13 +4,16 @@
 **Untuk**: Staf kasir yang melayani transaksi harian di satu cabang
 **Ruang lingkup akses**: Hanya **membuat transaksi** dan **mencetak struk**
 untuk Penjualan Aksesoris, Pulsa/Data/Top Up Saldo, Transfer/Setor Bank,
-Servis HP, Gadai Barang, dan Pinjam Uang.
+Servis HP, Gadai Barang, dan Pinjam Uang — ditambah **mencatat saldo akhir
+kas harian**.
 
 > **Penting**: Sebagai Kasir, Anda **tidak bisa**:
 > - Mengubah harga jual saat transaksi.
 > - Membatalkan (void) transaksi yang sudah tersimpan.
 > - Melihat laporan laba/untung usaha.
 > - Mengubah data produk, harga, atau menghapus data apa pun.
+> - Menambah sumber dana kas baru atau mengubah **saldo awal** kas (hanya
+>   bisa mengisi/mengedit angka **saldo akhir**).
 >
 > Ini bukan kesalahan sistem — memang dirancang demikian untuk melindungi
 > Anda dan usaha dari kesalahan/kecurigaan yang tidak perlu. Jika ada
@@ -42,7 +45,8 @@ dan lanjutkan transaksi.
 - **Sidebar kiri**: menu navigasi. Anda hanya akan melihat menu yang memang
   diizinkan untuk Kasir (Dashboard, Kasir Aksesoris, Riwayat Penjualan,
   Pulsa/Data/Top Up, Transfer/Setor Bank, Servis HP, Gadai Barang, Pinjam
-  Uang, Produk, Pelanggan, Laporan — sesuai pengaturan Admin Cabang Anda).
+  Uang, Saldo Kas Harian, Produk, Pelanggan, Laporan — sesuai pengaturan
+  Admin Cabang Anda).
 - **Pojok kanan atas**: nama Anda, role (Kasir), dan cabang tempat Anda bertugas.
 - Di layar HP/tablet sempit, sidebar tersembunyi — ketuk ikon **☰** di pojok
   kiri atas untuk membukanya.
@@ -181,7 +185,36 @@ dilakukan oleh Admin Cabang — jika Anda diberi wewenang ini, ikuti panduan
 
 ---
 
-## 9. Melihat Riwayat Transaksi
+## 9. Mencatat Saldo Kas Harian (Tutup Kas)
+
+Ini adalah tugas rutin di **akhir shift/hari** untuk memastikan uang yang ada
+sesuai dengan catatan sistem.
+
+1. Klik menu **Saldo Kas Harian**.
+2. Anda akan melihat daftar sumber dana cabang Anda, biasanya: **Kas Tunai**,
+   **Saldo Bank**, dan **Gopay Merchant** (atau sumber lain yang sudah
+   ditambahkan Super Admin).
+3. Untuk masing-masing sumber dana, hitung/cek jumlah aktualnya:
+   - **Kas Tunai** — hitung fisik uang di laci kasir.
+   - **Saldo Bank** — cek mutasi/saldo terakhir di rekening (lewat m-banking/internet banking).
+   - **Gopay Merchant** (atau e-wallet lain) — cek saldo di aplikasi merchant.
+4. Isi angka tersebut pada kolom **Saldo Akhir** di baris masing-masing sumber dana.
+5. Bila ada selisih dengan yang seharusnya, tulis penjelasan singkat di kolom **Catatan**.
+6. Klik **Simpan Saldo Kas**.
+
+> **Catatan penting**: Anda hanya bisa mengisi/mengedit kolom **Saldo Akhir**.
+> Kolom **Saldo Awal** hanya ditampilkan sebagai referensi (readonly) dan
+> hanya bisa diubah oleh Super Admin. Anda juga tidak bisa menambah sumber
+> dana baru — bila ada rekening/e-wallet baru yang perlu dicatat, minta
+> Admin Cabang/Super Admin menambahkannya lewat **Kelola Sumber Dana**.
+
+Anda bisa membuka kembali menu ini kapan saja pada hari yang sama untuk
+memperbaiki angka bila ternyata ada koreksi — data yang tersimpan terakhir
+yang akan dipakai.
+
+---
+
+## 10. Melihat Riwayat Transaksi
 
 - Menu **Riwayat Penjualan** menampilkan seluruh transaksi penjualan aksesoris
   cabang Anda — berguna untuk mencari ulang transaksi lama untuk dicetak lagi
@@ -193,7 +226,7 @@ dilakukan oleh Admin Cabang — jika Anda diberi wewenang ini, ikuti panduan
 
 ---
 
-## 10. Hal yang TIDAK Bisa Dilakukan Kasir (dan Kenapa)
+## 11. Hal yang TIDAK Bisa Dilakukan Kasir (dan Kenapa)
 
 | Yang tidak bisa dilakukan | Alasan |
 |---|---|
@@ -201,6 +234,7 @@ dilakukan oleh Admin Cabang — jika Anda diberi wewenang ini, ikuti panduan
 | Membatalkan (void) transaksi (penjualan/bank) | Mencegah kasir "menghapus jejak" transaksi bermasalah tanpa persetujuan atasan |
 | Melihat Laporan Laba Rugi | Informasi laba/margin usaha bersifat rahasia, hanya untuk pemilik & Admin Cabang |
 | Menghapus/mengubah data produk, supplier, kategori, daftar bank | Menjaga integritas data master yang dipakai seluruh cabang |
+| Menambah sumber dana kas baru atau mengubah **saldo awal** | Menjaga akurasi baseline saldo kas — hanya Super Admin (izin `cash.manage`) |
 | Mengubah status servis atau menyerahkan unit tanpa izin `service.manage` | Memastikan hanya staf berwenang yang menutup transaksi servis |
 | Membuat/menghapus akun pengguna lain | Wewenang khusus Super Admin |
 
@@ -210,7 +244,7 @@ menyesuaikan hak akses Anda.
 
 ---
 
-## 11. Checklist Awal & Akhir Shift
+## 12. Checklist Awal & Akhir Shift
 
 **Awal shift:**
 - [ ] Login dan pastikan nama & cabang yang tampil di pojok kanan atas sudah benar.
@@ -219,12 +253,13 @@ menyesuaikan hak akses Anda.
 **Akhir shift:**
 - [ ] Pastikan semua transaksi hari ini sudah diproses (cek **Riwayat Penjualan**,
       **Transfer/Setor Bank**, dan **Pulsa/Top Up**).
+- [ ] Hitung & catat **Saldo Kas Harian** — kas tunai, saldo bank, dan saldo e-wallet merchant.
 - [ ] Informasikan ke Admin Cabang bila ada transaksi yang salah input dan perlu dibatalkan.
 - [ ] Logout jika perangkat kasir dipakai bergantian dengan kasir shift berikutnya (klik nama Anda → **Keluar**).
 
 ---
 
-## 12. Troubleshooting Sederhana
+## 13. Troubleshooting Sederhana
 
 | Kendala | Solusi |
 |---|---|
@@ -232,6 +267,7 @@ menyesuaikan hak akses Anda.
 | Produk yang dicari tidak muncul | Pastikan ejaan benar, atau cek ke Admin Cabang apakah produk tsb sudah didaftarkan/masih aktif |
 | Stok produk tertulis habis padahal ada fisiknya | Laporkan ke Admin Cabang untuk penyesuaian stok, jangan memaksakan transaksi |
 | Bank tujuan tidak ada di daftar | Laporkan ke Admin Cabang/Super Admin untuk menambahkan lewat Kelola Daftar Bank |
+| Sumber dana kas yang dicari tidak ada di menu Saldo Kas Harian | Laporkan ke Admin Cabang/Super Admin untuk ditambahkan lewat Kelola Sumber Dana |
 | Salah input jumlah bayar/qty/nominal sebelum klik Proses | Perbaiki dulu di layar sebelum diproses — setelah diproses harus dibatalkan oleh Admin Cabang |
 | Struk tidak tercetak di printer | Klik **Cetak Ulang** di halaman struk; jika printer bermasalah, cek koneksi printer/kertas |
 | Halaman keluar sendiri ke login | Sesi otomatis habis (±30 menit tanpa aktivitas) — login ulang, transaksi yang sudah tersimpan tetap aman |

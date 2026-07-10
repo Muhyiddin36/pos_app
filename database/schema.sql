@@ -346,6 +346,42 @@ CREATE TABLE IF NOT EXISTS service_payments (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ---------------------------------------------------------------------
+-- 7d. SALDO KAS HARIAN (REKONSILIASI KAS/BANK/E-WALLET PER CABANG)
+-- ---------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS cash_sources (
+    id                INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    branch_id         INT UNSIGNED NOT NULL,
+    name              VARCHAR(100) NOT NULL COMMENT 'Keterangan sumber dana, mis. Kas Tunai, Saldo Bank BCA, Gopay Merchant',
+    type              ENUM('cash','bank','ewallet','other') NOT NULL DEFAULT 'cash',
+    opening_balance   DECIMAL(15,2) NOT NULL DEFAULT 0 COMMENT 'Saldo awal - hanya diatur Super Admin',
+    is_active         TINYINT(1) NOT NULL DEFAULT 1,
+    created_by        INT UNSIGNED DEFAULT NULL,
+    created_at        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at        DATETIME DEFAULT NULL,
+    CONSTRAINT fk_cashsource_branch FOREIGN KEY (branch_id) REFERENCES branches(id) ON DELETE CASCADE,
+    CONSTRAINT fk_cashsource_user FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS cash_balance_records (
+    id                BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    branch_id         INT UNSIGNED NOT NULL,
+    cash_source_id    INT UNSIGNED NOT NULL,
+    record_date       DATE NOT NULL,
+    closing_balance   DECIMAL(15,2) NOT NULL DEFAULT 0 COMMENT 'Saldo akhir - diinput/diedit Kasir/Admin Cabang',
+    note              VARCHAR(255) DEFAULT NULL,
+    recorded_by       INT UNSIGNED DEFAULT NULL,
+    updated_by        INT UNSIGNED DEFAULT NULL,
+    created_at        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY uq_cash_record (cash_source_id, record_date),
+    CONSTRAINT fk_cashrecord_branch FOREIGN KEY (branch_id) REFERENCES branches(id) ON DELETE CASCADE,
+    CONSTRAINT fk_cashrecord_source FOREIGN KEY (cash_source_id) REFERENCES cash_sources(id) ON DELETE CASCADE,
+    CONSTRAINT fk_cashrecord_recorder FOREIGN KEY (recorded_by) REFERENCES users(id) ON DELETE SET NULL,
+    CONSTRAINT fk_cashrecord_updater FOREIGN KEY (updated_by) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ---------------------------------------------------------------------
 -- 8. GADAI BARANG (PAWN)
 -- ---------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS pawns (
@@ -476,5 +512,6 @@ CREATE INDEX idx_stockmove_product ON stock_movements(product_id, created_at);
 CREATE INDEX idx_banktrx_branch_date ON bank_transactions(branch_id, created_at);
 CREATE INDEX idx_service_branch_status ON service_orders(branch_id, status);
 CREATE INDEX idx_svclog_order ON service_status_logs(service_order_id, created_at);
+CREATE INDEX idx_cashrecord_branch_date ON cash_balance_records(branch_id, record_date);
 
 SET FOREIGN_KEY_CHECKS = 1;

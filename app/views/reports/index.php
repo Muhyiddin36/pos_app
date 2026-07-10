@@ -37,4 +37,8 @@
         <h3>Laporan Servis HP</h3>
         <p class="text-muted mb-0">Rekap servis HP, nilai jasa, dan status pengambilan.</p>
     </a>
+    <a class="card" style="padding:1.25rem;display:block;" href="<?= e(url('reports/cash')) ?>">
+        <h3>Laporan Saldo Kas Harian</h3>
+        <p class="text-muted mb-0">Riwayat saldo akhir kas tunai, bank, dan e-wallet merchant.</p>
+    </a>
 </div>

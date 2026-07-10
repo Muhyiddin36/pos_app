@@ -41,6 +41,9 @@ erDiagram
     SERVICE_ORDERS ||--o{ SERVICE_STATUS_LOGS : "-"
     SERVICE_ORDERS ||--o{ SERVICE_PAYMENTS : "-"
 
+    BRANCHES ||--o{ CASH_SOURCES : "-"
+    CASH_SOURCES ||--o{ CASH_BALANCE_RECORDS : "dicatat harian"
+
     CUSTOMERS ||--o{ PAWNS : "menggadaikan"
     BRANCHES ||--o{ PAWNS : "-"
     PAWNS ||--o{ PAWN_PAYMENTS : "-"
@@ -69,6 +72,7 @@ erDiagram
 | `pulsa_products`, `pulsa_transactions` | Produk & transaksi pulsa/paket data/top up e-wallet (`category` = `pulsa`\|`paket_data`\|`pln`\|`ewallet`\|`other`) |
 | `banks`, `bank_transactions` | Master bank & transaksi transfer/setor tunai/tarik tunai (agen semua bank) |
 | `service_orders`, `service_status_logs`, `service_payments` | Servis HP: penerimaan unit, riwayat status pengerjaan, dan pembayaran (DP + pelunasan) |
+| `cash_sources`, `cash_balance_records` | Saldo kas harian: master sumber dana + saldo awal (Super Admin), saldo akhir harian per sumber dana (Kasir/Admin Cabang) |
 | `pawns`, `pawn_payments` | Gadai barang & pembayaran bunga/tebusan |
 | `loans`, `loan_installments`, `loan_payments` | Pinjaman uang & angsuran |
 | `audit_logs` | Jejak audit seluruh aksi penting |
@@ -90,3 +94,9 @@ erDiagram
 - **Transaksi database**: operasi yang mengubah beberapa tabel sekaligus (mis.
   membuat penjualan + item + stok) dibungkus `PDO::beginTransaction()` /
   `commit()` / `rollBack()` di layer Model agar konsisten (ACID).
+- **Pemisahan tugas (segregation of duty)**: `cash_sources` (keterangan sumber
+  dana & `opening_balance`) hanya dapat diubah oleh permission `cash.manage`
+  yang di-seed khusus untuk role Super Admin, sedangkan `cash_balance_records`
+  (saldo akhir harian) memakai `UNIQUE(cash_source_id, record_date)` sehingga
+  Kasir/Admin Cabang cukup *upsert* satu angka per sumber dana per hari tanpa
+  bisa menyentuh saldo awal.

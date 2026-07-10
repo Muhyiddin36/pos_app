@@ -68,7 +68,10 @@ INSERT INTO permissions (code, module, name) VALUES
 ('bank.manage',         'bank',      'Kelola Daftar Bank'),
 ('service.view',        'service',   'Lihat Servis HP'),
 ('service.create',      'service',   'Terima Servis HP Baru'),
-('service.manage',      'service',   'Kelola Status, Biaya & Pembayaran Servis HP');
+('service.manage',      'service',   'Kelola Status, Biaya & Pembayaran Servis HP'),
+('cash.view',           'cash',      'Lihat Saldo Kas'),
+('cash.record',         'cash',      'Input/Ubah Saldo Akhir Kas Harian'),
+('cash.manage',         'cash',      'Kelola Sumber Dana & Saldo Awal (Super Admin)');
 
 -- Super Admin => seluruh permission
 INSERT INTO role_permissions (role_id, permission_id)
@@ -87,6 +90,7 @@ SELECT 2, id FROM permissions WHERE code IN (
     'loan.view','loan.create','loan.manage',
     'bank.view','bank.create','bank.void','bank.manage',
     'service.view','service.create','service.manage',
+    'cash.view','cash.record',
     'reports.view','reports.profit',
     'audit.view'
 );
@@ -102,7 +106,8 @@ SELECT 3, id FROM permissions WHERE code IN (
     'pawn.view','pawn.create',
     'loan.view','loan.create',
     'bank.view','bank.create',
-    'service.view','service.create'
+    'service.view','service.create',
+    'cash.view','cash.record'
 );
 
 -- ---------------------------------------------------------------------
@@ -165,3 +170,11 @@ INSERT INTO banks (code, name) VALUES
 ('JAGO', 'Bank Jago'),
 ('SEABANK', 'SeaBank'),
 ('OTHER', 'Bank Lainnya');
+
+-- ---------------------------------------------------------------------
+-- Sumber dana untuk fitur Saldo Kas Harian (dikelola Super Admin)
+-- ---------------------------------------------------------------------
+INSERT INTO cash_sources (branch_id, name, type, opening_balance, created_by) VALUES
+(1, 'Kas Tunai', 'cash', 0, 1),
+(1, 'Saldo Bank', 'bank', 0, 1),
+(1, 'Gopay Merchant', 'ewallet', 0, 1);

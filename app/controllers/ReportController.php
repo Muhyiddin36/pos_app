@@ -183,6 +183,24 @@ final class ReportController extends Controller
         ]);
     }
 
+    public function cash(): void
+    {
+        $this->requirePermission('reports.view');
+        [$from, $to] = $this->dateRange();
+        $history = CashBalanceRecordModel::history($this->currentBranchId(), $from, $to);
+
+        if ($this->get('export') === 'csv') {
+            $this->exportCsv($history, [
+                'record_date' => 'Tanggal', 'source_name' => 'Sumber Dana',
+                'closing_balance' => 'Saldo Akhir', 'note' => 'Catatan', 'updated_by_name' => 'Dicatat Oleh',
+            ], 'laporan_saldo_kas_' . date('Ymd') . '.csv');
+        }
+
+        $this->view('reports/cash', [
+            'title' => 'Laporan Saldo Kas Harian', 'history' => $history, 'from' => $from, 'to' => $to,
+        ]);
+    }
+
     /** @return array{0:string,1:string} */
     private function dateRange(): array
     {

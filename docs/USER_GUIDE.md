@@ -5,8 +5,8 @@
 | Role | Ruang Lingkup | Hak Akses Utama |
 |---|---|---|
 | **Super Admin** | Seluruh cabang | Akses penuh: semua modul, semua cabang, laporan laba, log audit, kelola pengguna/role, backup & restore, pengaturan sistem. |
-| **Admin Cabang** | Hanya cabangnya sendiri | Penjualan, pembelian, stok, supplier, pelanggan, gadai, pinjaman, pulsa/data/top up, transfer/setor bank, servis HP, laporan cabangnya sendiri (termasuk laba). |
-| **Kasir** | Hanya cabangnya sendiri | Membuat transaksi (penjualan, pulsa/data/top up, gadai, pinjaman, transfer/setor bank, servis HP) dan mencetak struk saja. **Tidak dapat** mengubah harga jual saat transaksi, membatalkan (void) transaksi, atau melihat laporan laba. |
+| **Admin Cabang** | Hanya cabangnya sendiri | Penjualan, pembelian, stok, supplier, pelanggan, gadai, pinjaman, pulsa/data/top up, transfer/setor bank, servis HP, catat saldo akhir kas, laporan cabangnya sendiri (termasuk laba). |
+| **Kasir** | Hanya cabangnya sendiri | Membuat transaksi (penjualan, pulsa/data/top up, gadai, pinjaman, transfer/setor bank, servis HP) dan mencatat **saldo akhir kas harian**, serta mencetak struk. **Tidak dapat** mengubah harga jual saat transaksi, membatalkan (void) transaksi, mengubah saldo awal/sumber dana kas, atau melihat laporan laba. |
 
 Hak akses setiap role (kecuali Super Admin, yang selalu penuh) dapat disesuaikan
 lebih detail oleh Super Admin melalui menu **Role & Hak Akses**.
@@ -40,6 +40,10 @@ izin `reports.profit` (Super Admin & Admin Cabang).
 - **Supplier**: data pemasok untuk transaksi pembelian.
 - **Pelanggan**: data pelanggan dipakai bersama oleh modul Penjualan, Gadai, Pinjaman, Transfer/Setor Bank, dan Servis HP.
 - **Daftar Bank**: master data bank untuk modul Transfer/Setor Tunai (izin `bank.manage`).
+- **Sumber Dana Saldo Kas**: keterangan sumber dana (mis. Kas Tunai, Saldo Bank,
+  Gopay Merchant) dan **saldo awal** masing-masing — **khusus izin `cash.manage`,
+  hanya dimiliki Super Admin**. Admin Cabang dan Kasir hanya bisa mencatat saldo
+  akhir harian, tidak bisa menambah sumber dana baru atau mengubah saldo awal.
 
 > **Catatan**: Super Admin tidak terikat ke satu cabang, sehingga saat mengelola
 > produk harus memilih cabang terlebih dahulu dari dropdown di menu Produk. Untuk
@@ -124,7 +128,28 @@ modal/jual per provider) dikelola terpisah melalui tombol **Kelola Produk**
    sebagian/penuh. Status pinjaman otomatis berubah menjadi **Lunas** setelah
    seluruh angsuran terbayar.
 
-## 11. Laporan
+## 11. Saldo Kas Harian
+
+1. Menu **Saldo Kas Harian** menampilkan daftar sumber dana aktif cabang
+   (mis. Kas Tunai, Saldo Bank, Gopay Merchant) untuk tanggal yang dipilih
+   (default hari ini).
+2. Setiap sumber dana menampilkan **Saldo Awal** (referensi, hanya bisa diatur
+   Super Admin) dan kolom **Saldo Akhir** yang bisa diisi/diedit oleh Kasir
+   atau Admin Cabang.
+3. Isi angka hasil hitung fisik (kas tunai di laci, saldo rekening bank, saldo
+   Gopay Merchant, dst.) untuk setiap sumber dana, tambahkan catatan bila ada
+   selisih, lalu klik **Simpan Saldo Kas**.
+4. Data dapat diedit berulang kali pada hari yang sama (mis. jika di-cross
+   check ulang) — setiap penyimpanan menimpa nilai sebelumnya untuk tanggal
+   dan sumber dana yang sama.
+5. Tabel **Riwayat Saldo Kas** di bawahnya menampilkan histori tercatat,
+   dapat difilter per rentang tanggal.
+6. **Kelola Sumber Dana** (tombol di pojok kanan atas, khusus izin
+   `cash.manage`/Super Admin) — menambah sumber dana baru, mengubah nama/
+   keterangan, dan mengatur **saldo awal**. Kasir dan Admin Cabang tidak
+   melihat tombol ini.
+
+## 12. Laporan
 
 Menu **Laporan** menyediakan:
 
@@ -136,14 +161,15 @@ Menu **Laporan** menyediakan:
 - **Laporan Pulsa, Data & Top Up** — rekap transaksi pulsa/paket data/e-wallet.
 - **Laporan Transfer / Setor Tunai** — rekap transaksi agen bank & laba jasa layanan.
 - **Laporan Servis HP** — rekap servis, nilai jasa, dan status pengambilan.
+- **Laporan Saldo Kas Harian** — riwayat saldo akhir seluruh sumber dana, dapat diekspor ke CSV.
 
-## 12. Log Audit
+## 13. Log Audit
 
 Setiap aksi penting (login/logout, tambah/ubah/hapus data, pembatalan transaksi,
 backup/restore) otomatis tercatat di menu **Log Audit** beserta waktu, pengguna,
 cabang, dan alamat IP — dapat difilter berdasarkan modul, cabang, dan tanggal.
 
-## 13. Backup & Restore
+## 14. Backup & Restore
 
 Lihat menu **Backup & Restore** (khusus Super Admin). Backup dibuat murni
 dengan PHP (tanpa `mysqldump`) sehingga tetap berjalan di shared hosting tanpa
@@ -151,7 +177,7 @@ akses shell. File backup dapat diunduh sebagai cadangan offline, atau
 digunakan untuk memulihkan data kapan saja. **Restore akan menimpa seluruh
 data yang ada** — selalu buat backup terbaru sebelum melakukan restore.
 
-## 14. Pengaturan Sistem
+## 15. Pengaturan Sistem
 
 Menu **Pengaturan** (khusus Super Admin) mengatur nama aplikasi, mata uang,
 zona waktu, lama timeout sesi, suku bunga default gadai/pinjaman, biaya admin

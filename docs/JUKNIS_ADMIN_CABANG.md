@@ -225,17 +225,36 @@ Menu sidebar: **Pinjam Uang**.
 
 ---
 
-## 12. Melihat Laporan Cabang Anda
+## 12. Saldo Kas Harian
 
-Menu sidebar: **Laporan** — semua laporan (Penjualan, **Laba Rugi**, Stok,
-Gadai, Pinjaman, Pulsa/Data/Top Up, Transfer/Setor Bank, Servis HP) otomatis
-hanya menampilkan data **cabang Anda**. Gunakan filter tanggal untuk laporan
-harian/mingguan/bulanan, dan tombol **Ekspor CSV** bila perlu diolah di Excel
-atau dilaporkan ke pemilik usaha.
+Menu sidebar: **Saldo Kas Harian**.
+
+1. Setiap tutup toko (atau kapan pun diperlukan), buka menu ini untuk melihat
+   daftar sumber dana cabang Anda (mis. Kas Tunai, Saldo Bank, Gopay Merchant).
+2. Hitung fisik/cek saldo aktual masing-masing sumber, lalu isi kolom **Saldo
+   Akhir** untuk tiap baris. Kolom **Saldo Awal** hanya referensi (diatur Super Admin).
+3. Tambahkan **Catatan** bila ada selisih atau hal yang perlu dijelaskan.
+4. Klik **Simpan Saldo Kas**. Anda bisa mengedit ulang nilai untuk tanggal
+   yang sama kapan pun — data terakhir yang menimpa yang lama.
+5. Gunakan tanggal di bagian atas untuk mengisi/mengoreksi hari sebelumnya
+   bila terlewat, dan tabel **Riwayat Saldo Kas** untuk meninjau catatan lama.
+
+> **Anda tidak bisa** menambah sumber dana baru atau mengubah **Saldo Awal**
+> — itu wewenang eksklusif Super Admin (lihat §14).
 
 ---
 
-## 13. Checklist Rutin Admin Cabang
+## 13. Melihat Laporan Cabang Anda
+
+Menu sidebar: **Laporan** — semua laporan (Penjualan, **Laba Rugi**, Stok,
+Gadai, Pinjaman, Pulsa/Data/Top Up, Transfer/Setor Bank, Servis HP, **Saldo
+Kas Harian**) otomatis hanya menampilkan data **cabang Anda**. Gunakan filter
+tanggal untuk laporan harian/mingguan/bulanan, dan tombol **Ekspor CSV** bila
+perlu diolah di Excel atau dilaporkan ke pemilik usaha.
+
+---
+
+## 14. Checklist Rutin Admin Cabang
 
 | Frekuensi | Tugas |
 |---|---|
@@ -244,22 +263,26 @@ atau dilaporkan ke pemilik usaha.
 | Harian | Pantau **Riwayat Penjualan**, tangani transaksi bermasalah (void bila perlu) |
 | Harian | Cek transaksi **Pulsa/Top Up** yang berstatus gagal/pending, tindak lanjuti ke provider |
 | Harian | Perbarui **status servis HP** yang sedang dikerjakan agar pelanggan bisa ditanya progresnya |
+| Setiap tutup toko | Isi/verifikasi **Saldo Kas Harian** (kas tunai, bank, e-wallet merchant) |
 | Mingguan | Review **Laporan Laba Rugi** cabang |
 | Saat jatuh tempo gadai/pinjaman mendekat | Hubungi pelanggan untuk pembayaran/perpanjangan |
 
 ---
 
-## 14. Yang BUKAN Wewenang Admin Cabang
+## 15. Yang BUKAN Wewenang Admin Cabang
 
 - Tidak bisa menambah/menghapus **Cabang** lain atau melihat datanya.
 - Tidak bisa membuat/menghapus akun **Pengguna** atau mengubah **Role & Hak Akses**.
 - Tidak bisa mengakses **Backup & Restore** database atau **Pengaturan Sistem**.
+- Tidak bisa menambah **Sumber Dana Saldo Kas** baru atau mengubah **Saldo
+  Awal**-nya — hanya bisa mencatat saldo akhir harian (izin `cash.manage`
+  khusus Super Admin).
 
 Untuk kebutuhan di atas, hubungi **Super Admin** (lihat [`JUKNIS_SUPER_ADMIN.md`](JUKNIS_SUPER_ADMIN.md)).
 
 ---
 
-## 15. Troubleshooting Cepat
+## 16. Troubleshooting Cepat
 
 | Kendala | Solusi |
 |---|---|
@@ -268,4 +291,5 @@ Untuk kebutuhan di atas, hubungi **Super Admin** (lihat [`JUKNIS_SUPER_ADMIN.md`
 | Transaksi salah input (penjualan/bank) | Gunakan fitur **Batalkan Transaksi (void)** dari halaman Detail/daftar, isi alasan |
 | Tidak melihat menu Laporan Laba | Hubungi Super Admin untuk memastikan izin `reports.profit` aktif untuk role Admin Cabang |
 | Servis HP tidak muncul di daftar | Pastikan filter status di menu Servis HP tidak sedang menyaring status lain |
+| Sumber dana baru (mis. rekening bank baru) belum ada di menu Saldo Kas Harian | Minta Super Admin menambahkannya lewat **Kelola Sumber Dana** — Admin Cabang tidak bisa menambah sendiri |
 | Lupa password | Minta Super Admin mereset lewat menu Pengguna, atau ganti sendiri jika masih ingat password lama |

@@ -36,10 +36,11 @@ dan **MySQL/MariaDB**, yang tersedia di hampir semua paket hosting cPanel.
 
 > Alternatif: gunakan fitur **SQL** di phpMyAdmin dan tempel isi kedua file secara berurutan.
 
-> **Sudah pernah instal sebelumnya** (sebelum modul Transfer/Setor Bank, Servis
-> HP, dan Top Up E-Wallet ditambahkan)? Tidak perlu instal ulang dari awal —
-> cukup jalankan `database/upgrade_2026_bank_service_ewallet.sql` sekali lewat
-> tab **SQL** di phpMyAdmin pada database yang sudah berjalan.
+> **Sudah pernah instal sebelumnya?** Tidak perlu instal ulang dari awal —
+> cukup jalankan skrip migrasi yang sesuai sekali lewat tab **SQL** di
+> phpMyAdmin pada database yang sudah berjalan:
+> - `database/upgrade_2026_bank_service_ewallet.sql` (sebelum modul Transfer/Setor Bank, Servis HP, Top Up E-Wallet ditambahkan)
+> - `database/upgrade_2026_saldo_kas.sql` (sebelum modul Saldo Kas Harian ditambahkan)
 
 ## 5. Konfigurasi Koneksi Database
 
