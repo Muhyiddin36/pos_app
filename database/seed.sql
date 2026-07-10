@@ -61,7 +61,14 @@ INSERT INTO permissions (code, module, name) VALUES
 ('reports.profit',      'reports',   'Lihat Laporan Laba/Rugi'),
 ('backup.manage',       'backup',    'Backup & Restore Database'),
 ('audit.view',          'audit',     'Lihat Log Audit'),
-('settings.manage',     'settings',  'Kelola Pengaturan Sistem');
+('settings.manage',     'settings',  'Kelola Pengaturan Sistem'),
+('bank.view',           'bank',      'Lihat Transaksi Transfer/Setor/Tarik Tunai'),
+('bank.create',         'bank',      'Buat Transaksi Transfer/Setor/Tarik Tunai'),
+('bank.void',           'bank',      'Batalkan Transaksi Bank'),
+('bank.manage',         'bank',      'Kelola Daftar Bank'),
+('service.view',        'service',   'Lihat Servis HP'),
+('service.create',      'service',   'Terima Servis HP Baru'),
+('service.manage',      'service',   'Kelola Status, Biaya & Pembayaran Servis HP');
 
 -- Super Admin => seluruh permission
 INSERT INTO role_permissions (role_id, permission_id)
@@ -78,6 +85,8 @@ SELECT 2, id FROM permissions WHERE code IN (
     'pulsa.view','pulsa.create','pulsa.manage_product',
     'pawn.view','pawn.create','pawn.manage',
     'loan.view','loan.create','loan.manage',
+    'bank.view','bank.create','bank.void','bank.manage',
+    'service.view','service.create','service.manage',
     'reports.view','reports.profit',
     'audit.view'
 );
@@ -91,7 +100,9 @@ SELECT 3, id FROM permissions WHERE code IN (
     'sales.view','sales.create','sales.print',
     'pulsa.view','pulsa.create',
     'pawn.view','pawn.create',
-    'loan.view','loan.create'
+    'loan.view','loan.create',
+    'bank.view','bank.create',
+    'service.view','service.create'
 );
 
 -- ---------------------------------------------------------------------
@@ -110,7 +121,8 @@ INSERT INTO settings (`key`, `value`) VALUES
 ('session_timeout_minutes', '30'),
 ('receipt_footer', 'Terima kasih atas kunjungan Anda'),
 ('pawn_default_interest_rate', '5'),
-('loan_default_interest_rate', '5');
+('loan_default_interest_rate', '5'),
+('bank_default_admin_fee', '5000');
 
 -- ---------------------------------------------------------------------
 -- Contoh kategori & produk (opsional, boleh dihapus)
@@ -128,4 +140,28 @@ INSERT INTO products (branch_id, category_id, sku, barcode, name, unit, purchase
 INSERT INTO pulsa_products (category, provider, name, nominal, cost_price, sale_price) VALUES
 ('pulsa', 'Telkomsel', 'Telkomsel 10.000', 10000, 10200, 11000),
 ('pulsa', 'Indosat', 'Indosat 10.000', 10000, 10100, 11000),
-('paket_data', 'Telkomsel', 'Telkomsel Data 3GB', 0, 25000, 28000);
+('paket_data', 'Telkomsel', 'Telkomsel Data 3GB', 0, 25000, 28000),
+('ewallet', 'Gopay', 'Top Up Gopay 25.000', 25000, 25500, 27000),
+('ewallet', 'Gopay', 'Top Up Gopay 50.000', 50000, 50500, 52500),
+('ewallet', 'ShopeePay', 'Top Up ShopeePay 25.000', 25000, 25500, 27000),
+('ewallet', 'ShopeePay', 'Top Up ShopeePay 50.000', 50000, 50500, 52500),
+('ewallet', 'OVO', 'Top Up OVO 25.000', 25000, 25500, 27000),
+('ewallet', 'DANA', 'Top Up DANA 25.000', 25000, 25500, 27000);
+
+-- ---------------------------------------------------------------------
+-- Daftar bank untuk fitur Transfer / Setor Tunai / Tarik Tunai
+-- ---------------------------------------------------------------------
+INSERT INTO banks (code, name) VALUES
+('BCA', 'Bank Central Asia (BCA)'),
+('MANDIRI', 'Bank Mandiri'),
+('BNI', 'Bank Negara Indonesia (BNI)'),
+('BRI', 'Bank Rakyat Indonesia (BRI)'),
+('BSI', 'Bank Syariah Indonesia (BSI)'),
+('CIMB', 'CIMB Niaga'),
+('PERMATA', 'Bank Permata'),
+('DANAMON', 'Bank Danamon'),
+('BTN', 'Bank Tabungan Negara (BTN)'),
+('BTPN', 'BTPN / Jenius'),
+('JAGO', 'Bank Jago'),
+('SEABANK', 'SeaBank'),
+('OTHER', 'Bank Lainnya');

@@ -1,7 +1,7 @@
 <div class="content-header">
     <div>
-        <h1>Pulsa & Paket Data</h1>
-        <p class="text-muted mb-0">Transaksi penjualan pulsa, paket data, dan tagihan lainnya.</p>
+        <h1>Pulsa, Data &amp; Top Up Saldo</h1>
+        <p class="text-muted mb-0">Transaksi penjualan pulsa, paket data, token PLN, dan top up saldo e-wallet (Gopay, ShopeePay, OVO, DANA, dll).</p>
     </div>
     <?php if (Auth::can('pulsa.manage_product')): ?>
         <a class="btn btn-outline" href="<?= e(url('pulsa/products')) ?>">Kelola Produk</a>
@@ -18,8 +18,20 @@
                 <label>Produk</label>
                 <select name="pulsa_product_id" required>
                     <option value="">-- Pilih Produk --</option>
-                    <?php foreach ($products as $p): ?>
-                        <option value="<?= (int) $p['id'] ?>"><?= e($p['provider'] . ' - ' . $p['name']) ?> (<?= rupiah($p['sale_price']) ?>)</option>
+                    <?php
+                    $categoryLabels = ['pulsa' => 'Pulsa', 'paket_data' => 'Paket Data', 'pln' => 'Token PLN', 'ewallet' => 'Top Up E-Wallet', 'other' => 'Lainnya'];
+                    $grouped = [];
+                    foreach ($products as $p) {
+                        $grouped[$p['category']][] = $p;
+                    }
+                    ?>
+                    <?php foreach ($categoryLabels as $catKey => $catLabel): ?>
+                        <?php if (empty($grouped[$catKey])) continue; ?>
+                        <optgroup label="<?= e($catLabel) ?>">
+                            <?php foreach ($grouped[$catKey] as $p): ?>
+                                <option value="<?= (int) $p['id'] ?>"><?= e($p['provider'] . ' - ' . $p['name']) ?> (<?= rupiah($p['sale_price']) ?>)</option>
+                            <?php endforeach; ?>
+                        </optgroup>
                     <?php endforeach; ?>
                 </select>
             </div>

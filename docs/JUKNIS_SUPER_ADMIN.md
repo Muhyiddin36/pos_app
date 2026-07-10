@@ -104,8 +104,13 @@ Menu sidebar: **Role & Hak Akses**.
 Beberapa data dikelola terpusat oleh Super Admin dan dipakai bersama semua cabang:
 
 - **Kategori** produk aksesoris (mis. Casing, Charger, Aksesoris Lain).
-- **Produk Pulsa & Paket Data** — menu **Pulsa & Paket Data → Kelola Produk**
-  (daftar nominal & harga modal/jual per provider seperti Telkomsel, Indosat).
+- **Produk Pulsa, Data & Top Up** — menu **Pulsa, Data & Top Up → Kelola Produk**
+  (daftar nominal & harga modal/jual per provider: pulsa/paket data seperti
+  Telkomsel/Indosat, token PLN, dan top up e-wallet seperti Gopay/ShopeePay/OVO/DANA).
+- **Daftar Bank** — menu **Transfer / Setor Bank → Kelola Daftar Bank**, berisi
+  daftar bank yang bisa dipilih saat transaksi transfer/setor/tarik tunai
+  (BCA, Mandiri, BNI, BRI, dll — sudah terisi otomatis dari `seed.sql`, tinggal
+  tambah/nonaktifkan sesuai kebutuhan).
 
 Untuk **Produk aksesoris per cabang** (stok fisik), Super Admin perlu memilih
 cabang dulu di menu **Produk** (dropdown "Pilih Cabang" muncul karena Super
@@ -183,8 +188,10 @@ Menu sidebar: **Pengaturan**.
 
 Bisa diatur di sini: nama aplikasi, simbol mata uang, zona waktu, **lama
 timeout sesi login** (default 30 menit — perpanjang jika staf sering dianggap
-"logout sendiri"), **suku bunga default** gadai & pinjaman (memudahkan
-pengisian form transaksi baru), dan catatan kaki struk cetak.
+"logout sendiri"), **suku bunga default** gadai & pinjaman, **biaya admin
+default** untuk transaksi transfer/setor/tarik tunai (memudahkan pengisian
+form transaksi baru — kasir tetap bisa menyesuaikan per transaksi), dan
+catatan kaki struk cetak.
 
 ---
 

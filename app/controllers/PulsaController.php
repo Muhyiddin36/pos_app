@@ -11,7 +11,7 @@ final class PulsaController extends Controller
         $to = $this->get('to');
 
         $this->view('pulsa/index', [
-            'title'        => 'Pulsa & Paket Data',
+            'title'        => 'Pulsa, Data & Top Up Saldo',
             'transactions' => PulsaTransactionModel::listForBranch($this->currentBranchId(), $from, $to),
             'products'     => PulsaProductModel::activeList(),
             'from'         => $from,
@@ -79,7 +79,7 @@ final class PulsaController extends Controller
     {
         $this->requirePermission('pulsa.manage_product');
         $this->view('pulsa/products', [
-            'title'    => 'Produk Pulsa & Paket Data',
+            'title'    => 'Produk Pulsa, Data & Top Up Saldo',
             'products' => PulsaProductModel::all('provider, nominal'),
         ]);
     }
@@ -140,7 +140,7 @@ final class PulsaController extends Controller
         ];
 
         $errors = Validator::make($data, [
-            'category'   => 'required|in:pulsa,paket_data,pln,other',
+            'category'   => 'required|in:pulsa,paket_data,pln,ewallet,other',
             'provider'   => 'required|max:50',
             'name'       => 'required|max:100',
             'cost_price' => 'required|numeric',

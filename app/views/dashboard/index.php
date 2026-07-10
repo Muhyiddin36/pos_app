@@ -30,6 +30,18 @@
         <div class="stat-value"><?= (int) $loanActive ?></div>
         <div class="text-muted">Outstanding <?= rupiah($loanOutstanding) ?></div>
     </div>
+    <div class="card stat-card">
+        <div class="stat-icon blue">&#127974;</div>
+        <div class="stat-label">Transfer/Setor Hari Ini</div>
+        <div class="stat-value"><?= (int) $bankToday['trx_count'] ?> trx</div>
+        <div class="text-muted"><?= rupiah($bankToday['total_amount']) ?></div>
+    </div>
+    <div class="card stat-card">
+        <div class="stat-icon amber">&#128295;</div>
+        <div class="stat-label">Servis HP Berjalan</div>
+        <div class="stat-value"><?= (int) $serviceOpen ?></div>
+        <div class="text-muted"><?= (int) $serviceReady ?> siap diambil</div>
+    </div>
 </div>
 
 <?php if ($canSeeProfit): ?>
@@ -38,8 +50,9 @@
         <div class="card-header"><h3>Laba Hari Ini</h3></div>
         <div class="card-body">
             <div class="pos-summary-row"><span>Laba Penjualan Aksesoris</span><strong class="text-success"><?= rupiah($salesToday['total_profit']) ?></strong></div>
-            <div class="pos-summary-row"><span>Laba Pulsa & Paket Data</span><strong class="text-success"><?= rupiah($pulsaToday['total_profit']) ?></strong></div>
-            <div class="pos-summary-row total"><span>Total Laba</span><strong class="text-success"><?= rupiah($salesToday['total_profit'] + $pulsaToday['total_profit']) ?></strong></div>
+            <div class="pos-summary-row"><span>Laba Pulsa, Data & Top Up Saldo</span><strong class="text-success"><?= rupiah($pulsaToday['total_profit']) ?></strong></div>
+            <div class="pos-summary-row"><span>Laba Transfer/Setor Bank</span><strong class="text-success"><?= rupiah($bankToday['total_profit']) ?></strong></div>
+            <div class="pos-summary-row total"><span>Total Laba</span><strong class="text-success"><?= rupiah($salesToday['total_profit'] + $pulsaToday['total_profit'] + $bankToday['total_profit']) ?></strong></div>
         </div>
     </div>
 
@@ -77,5 +90,7 @@
         <?php if (Auth::can('pulsa.create')): ?><a class="btn btn-outline" href="<?= e(url('pulsa/index')) ?>">Transaksi Pulsa</a><?php endif; ?>
         <?php if (Auth::can('pawn.create')): ?><a class="btn btn-outline" href="<?= e(url('pawn/create')) ?>">Gadai Baru</a><?php endif; ?>
         <?php if (Auth::can('loan.create')): ?><a class="btn btn-outline" href="<?= e(url('loan/create')) ?>">Pinjaman Baru</a><?php endif; ?>
+        <?php if (Auth::can('bank.create')): ?><a class="btn btn-outline" href="<?= e(url('bank/index')) ?>">Transfer/Setor Bank</a><?php endif; ?>
+        <?php if (Auth::can('service.create')): ?><a class="btn btn-outline" href="<?= e(url('service/create')) ?>">Terima Servis HP</a><?php endif; ?>
     </div>
 </div>

@@ -3,8 +3,8 @@
 **Aplikasi**: POS Multi Usaha
 **Untuk**: Penanggung jawab operasional harian di satu lokasi/cabang usaha
 **Ruang lingkup akses**: Hanya data cabang Anda sendiri — penjualan,
-pembelian, stok, supplier, pelanggan, gadai, pinjaman, pulsa/data, dan
-laporan (termasuk laba) khusus cabang Anda.
+pembelian, stok, supplier, pelanggan, gadai, pinjaman, pulsa/data/top up,
+transfer/setor bank, servis HP, dan laporan (termasuk laba) khusus cabang Anda.
 
 > Anda **tidak bisa** melihat atau mengubah data cabang lain, dan **tidak
 > bisa** mengelola akun pengguna/cabang/pengaturan sistem — itu wewenang
@@ -29,10 +29,12 @@ laporan (termasuk laba) khusus cabang Anda.
 
 Setelah login, halaman **Dashboard** menampilkan ringkasan cabang Anda hari ini:
 
-- Jumlah & total transaksi **penjualan** dan **pulsa/data**.
+- Jumlah & total transaksi **penjualan** dan **pulsa/data/top up**.
+- Jumlah & total transaksi **transfer/setor tunai**.
 - Jumlah **gadai aktif** & total dana yang belum ditebus (outstanding).
 - Jumlah **pinjaman aktif** & total tagihan belum terbayar.
-- **Laba Hari Ini** (penjualan aksesoris + pulsa/data).
+- Jumlah **servis HP** yang sedang berjalan dan yang sudah siap diambil.
+- **Laba Hari Ini** (penjualan aksesoris + pulsa/data/top up + transfer/setor bank).
 - Daftar **produk stok menipis** — segera lakukan pembelian/restock.
 
 Gunakan halaman ini setiap pagi untuk mengecek kondisi cabang.
@@ -85,14 +87,14 @@ Menu **Supplier** → **+ Tambah Supplier** → isi nama, kontak, telepon, alama
 ## 5. Mengelola Pelanggan
 
 Menu sidebar: **Pelanggan**. Data ini dipakai bersama oleh transaksi
-Penjualan, Gadai, dan Pinjaman.
+Penjualan, Gadai, Pinjaman, Transfer/Setor Bank, dan Servis HP.
 
 1. **+ Tambah Pelanggan** → isi Nama, Telepon, **No. KTP** (wajib untuk
    transaksi Gadai/Pinjaman), Alamat, Catatan.
 2. Klik **Simpan**.
 
-Anda juga bisa menambah pelanggan baru langsung dari formulir Gadai/Pinjaman
-lewat tautan "Tambah pelanggan baru" tanpa harus pindah menu.
+Anda juga bisa menambah pelanggan baru langsung dari formulir Gadai/Pinjaman/
+Servis HP lewat tautan "Tambah pelanggan baru" tanpa harus pindah menu.
 
 ---
 
@@ -114,19 +116,74 @@ menutupi kecurangan kasir. Semua pembatalan tercatat permanen di Log Audit.
 
 ---
 
-## 7. Pulsa & Paket Data
+## 7. Pulsa, Paket Data & Top Up Saldo E-Wallet
 
-Menu sidebar: **Pulsa & Paket Data**.
+Menu sidebar: **Pulsa, Data & Top Up**.
 
 - Transaksi harian: sama seperti Kasir (pilih produk, isi nomor tujuan, Proses).
 - **Khusus Admin Cabang**: tombol **Kelola Produk** untuk menambah/mengubah
-  daftar produk pulsa/paket data beserta harga modal & jual per provider
-  (mis. Telkomsel 10rb, Indosat Data 3GB, dst). Lakukan ini saat provider
-  mengubah harga modal atau ada produk baru yang ingin dijual.
+  daftar produk pulsa/paket data/token PLN/**top up e-wallet** (Gopay,
+  ShopeePay, OVO, DANA, dll) beserta harga modal & jual per provider. Lakukan
+  ini saat provider mengubah harga modal atau ada produk baru yang ingin dijual.
+- Saat menambah produk baru, pilih **Kategori** yang sesuai (Pulsa, Paket
+  Data, Token PLN, **Top Up Saldo E-Wallet**, atau Lainnya) agar tampil pada
+  grup yang tepat di layar transaksi.
 
 ---
 
-## 8. Gadai Barang
+## 8. Transfer / Setor Tunai / Tarik Tunai (Agen Semua Bank)
+
+Menu sidebar: **Transfer / Setor Bank**.
+
+### Melakukan transaksi
+1. Pilih **Jenis Transaksi**: Transfer ke Rekening Lain, Setor Tunai, atau Tarik Tunai.
+2. Pilih **Bank** tujuan, isi nomor rekening & nama pemilik rekening (untuk transfer).
+3. Isi **Nominal Uang** dan **Biaya Jasa/Admin** (otomatis terisi dari
+   Pengaturan Sistem, bisa disesuaikan sesuai kebijakan cabang atau negosiasi
+   dengan pelanggan).
+4. Klik **Proses & Cetak Struk**.
+5. Biaya jasa yang tercatat menjadi **laba** transaksi ini — muncul otomatis
+   di Dashboard dan Laporan Laba Rugi.
+
+### Mengelola Daftar Bank
+Tombol **Kelola Daftar Bank** untuk menambah bank baru atau menonaktifkan
+bank yang sudah tidak dilayani.
+
+### Membatalkan transaksi
+Dari daftar transaksi, klik **Batalkan** pada baris terkait, isi alasan
+pembatalan (wajib). Gunakan hanya untuk kesalahan input (mis. salah nominal
+atau salah pilih bank), bukan untuk menutupi kesalahan operasional lainnya.
+
+---
+
+## 9. Servis HP
+
+Menu sidebar: **Servis HP**.
+
+### Menerima servis baru
+1. **+ Terima Servis Baru** → pilih **Pelanggan** (atau tambah baru).
+2. Isi **Merk/Tipe HP**, **IMEI/Serial** (opsional), **Keluhan Pelanggan**,
+   dan **Kelengkapan yang Dititipkan** (charger, sim card, dus, dll — penting
+   dicatat untuk menghindari klaim kehilangan barang titipan).
+3. Isi **Perkiraan Biaya** dan (opsional) **Uang Muka (DP)** yang dibayar
+   pelanggan saat itu.
+4. Klik **Simpan Servis** → cetak **Bukti Servis** untuk diberikan ke pelanggan
+   (berisi No. Servis sebagai bukti pengambilan nanti).
+
+### Mengelola servis yang sedang berjalan
+Buka **Detail** pada servis terkait:
+- **Ubah Status Pengerjaan** — pilih Dikerjakan, Menunggu Sparepart, Selesai
+  (Siap Diambil), atau Dibatalkan, sertakan catatan teknisi (mis. "Ganti LCD,
+  menunggu sparepart datang"). Setiap perubahan status tercatat dengan waktu
+  di riwayat status agar bisa dijawab cepat saat pelanggan menanyakan progres.
+- **Serah Terima ke Pelanggan** — saat pelanggan mengambil unit: isi **Biaya
+  Final** (bisa berbeda dari perkiraan awal) dan **Jumlah Dibayar Sekarang**
+  (pelunasan sisa setelah dikurangi DP). Sistem otomatis menjumlahkan dengan
+  DP yang sudah dibayar dan menandai status **Sudah Diambil**.
+
+---
+
+## 10. Gadai Barang
 
 Menu sidebar: **Gadai Barang**.
 
@@ -148,7 +205,7 @@ Menu sidebar: **Gadai Barang**.
 
 ---
 
-## 9. Pinjam Uang
+## 11. Pinjam Uang
 
 Menu sidebar: **Pinjam Uang**.
 
@@ -168,29 +225,31 @@ Menu sidebar: **Pinjam Uang**.
 
 ---
 
-## 10. Melihat Laporan Cabang Anda
+## 12. Melihat Laporan Cabang Anda
 
 Menu sidebar: **Laporan** — semua laporan (Penjualan, **Laba Rugi**, Stok,
-Gadai, Pinjaman, Pulsa & Data) otomatis hanya menampilkan data **cabang Anda**.
-Gunakan filter tanggal untuk laporan harian/mingguan/bulanan, dan tombol
-**Ekspor CSV** bila perlu diolah di Excel atau dilaporkan ke pemilik usaha.
+Gadai, Pinjaman, Pulsa/Data/Top Up, Transfer/Setor Bank, Servis HP) otomatis
+hanya menampilkan data **cabang Anda**. Gunakan filter tanggal untuk laporan
+harian/mingguan/bulanan, dan tombol **Ekspor CSV** bila perlu diolah di Excel
+atau dilaporkan ke pemilik usaha.
 
 ---
 
-## 11. Checklist Rutin Admin Cabang
+## 13. Checklist Rutin Admin Cabang
 
 | Frekuensi | Tugas |
 |---|---|
 | Setiap buka toko | Cek Dashboard: stok menipis, gadai/pinjaman jatuh tempo hari ini |
 | Setiap ada barang masuk | Catat di menu **Pembelian** agar stok akurat |
 | Harian | Pantau **Riwayat Penjualan**, tangani transaksi bermasalah (void bila perlu) |
-| Harian | Cek transaksi **Pulsa** yang berstatus gagal/pending, tindak lanjuti ke provider |
+| Harian | Cek transaksi **Pulsa/Top Up** yang berstatus gagal/pending, tindak lanjuti ke provider |
+| Harian | Perbarui **status servis HP** yang sedang dikerjakan agar pelanggan bisa ditanya progresnya |
 | Mingguan | Review **Laporan Laba Rugi** cabang |
 | Saat jatuh tempo gadai/pinjaman mendekat | Hubungi pelanggan untuk pembayaran/perpanjangan |
 
 ---
 
-## 12. Yang BUKAN Wewenang Admin Cabang
+## 14. Yang BUKAN Wewenang Admin Cabang
 
 - Tidak bisa menambah/menghapus **Cabang** lain atau melihat datanya.
 - Tidak bisa membuat/menghapus akun **Pengguna** atau mengubah **Role & Hak Akses**.
@@ -200,12 +259,13 @@ Untuk kebutuhan di atas, hubungi **Super Admin** (lihat [`JUKNIS_SUPER_ADMIN.md`
 
 ---
 
-## 13. Troubleshooting Cepat
+## 15. Troubleshooting Cepat
 
 | Kendala | Solusi |
 |---|---|
 | Kasir di cabang saya tidak bisa login | Minta Super Admin memeriksa status akun kasir tsb |
 | Stok produk tidak sesuai fisik | Gunakan fitur **Penyesuaian Stok** pada halaman Ubah Produk, isi alasan yang jelas |
-| Transaksi salah input | Gunakan fitur **Batalkan Transaksi (void)** dari halaman Detail, isi alasan |
+| Transaksi salah input (penjualan/bank) | Gunakan fitur **Batalkan Transaksi (void)** dari halaman Detail/daftar, isi alasan |
 | Tidak melihat menu Laporan Laba | Hubungi Super Admin untuk memastikan izin `reports.profit` aktif untuk role Admin Cabang |
+| Servis HP tidak muncul di daftar | Pastikan filter status di menu Servis HP tidak sedang menyaring status lain |
 | Lupa password | Minta Super Admin mereset lewat menu Pengguna, atau ganti sendiri jika masih ingat password lama |

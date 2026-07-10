@@ -15,7 +15,9 @@ $menu = [
 $menuTransaksi = [
     ['label' => 'Kasir Aksesoris', 'icon' => '&#128722;', 'route' => 'sales/pos', 'key' => 'sales', 'perm' => 'sales.create'],
     ['label' => 'Riwayat Penjualan', 'icon' => '&#128220;', 'route' => 'sales/index', 'key' => 'sales', 'perm' => 'sales.view'],
-    ['label' => 'Pulsa & Paket Data', 'icon' => '&#128241;', 'route' => 'pulsa/index', 'key' => 'pulsa', 'perm' => 'pulsa.view'],
+    ['label' => 'Pulsa, Data & Top Up', 'icon' => '&#128241;', 'route' => 'pulsa/index', 'key' => 'pulsa', 'perm' => 'pulsa.view'],
+    ['label' => 'Transfer / Setor Bank', 'icon' => '&#127974;', 'route' => 'bank/index', 'key' => 'bank', 'perm' => 'bank.view'],
+    ['label' => 'Servis HP', 'icon' => '&#128295;', 'route' => 'service/index', 'key' => 'service', 'perm' => 'service.view'],
     ['label' => 'Gadai Barang', 'icon' => '&#128274;', 'route' => 'pawn/index', 'key' => 'pawn', 'perm' => 'pawn.view'],
     ['label' => 'Pinjam Uang', 'icon' => '&#128176;', 'route' => 'loan/index', 'key' => 'loan', 'perm' => 'loan.view'],
 ];

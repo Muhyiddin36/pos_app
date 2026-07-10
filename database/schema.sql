@@ -221,8 +221,8 @@ CREATE TABLE IF NOT EXISTS sale_items (
 -- ---------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS pulsa_products (
     id              INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    category         ENUM('pulsa','paket_data','pln','other') NOT NULL DEFAULT 'pulsa',
-    provider         VARCHAR(50) NOT NULL COMMENT 'Telkomsel, Indosat, XL, dll',
+    category         ENUM('pulsa','paket_data','pln','ewallet','other') NOT NULL DEFAULT 'pulsa',
+    provider         VARCHAR(50) NOT NULL COMMENT 'Telkomsel, Indosat, XL, Gopay, OVO, DANA, dll',
     name             VARCHAR(100) NOT NULL,
     nominal          DECIMAL(15,2) NOT NULL DEFAULT 0,
     cost_price       DECIMAL(15,2) NOT NULL DEFAULT 0,
@@ -248,6 +248,101 @@ CREATE TABLE IF NOT EXISTS pulsa_transactions (
     CONSTRAINT fk_pulsatrx_branch FOREIGN KEY (branch_id) REFERENCES branches(id) ON DELETE CASCADE,
     CONSTRAINT fk_pulsatrx_product FOREIGN KEY (pulsa_product_id) REFERENCES pulsa_products(id) ON DELETE RESTRICT,
     CONSTRAINT fk_pulsatrx_user FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ---------------------------------------------------------------------
+-- 7b. TRANSFER / SETOR TUNAI / TARIK TUNAI (AGEN BANK SEMUA BANK)
+-- ---------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS banks (
+    id            INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    code          VARCHAR(20)  NOT NULL UNIQUE,
+    name          VARCHAR(100) NOT NULL,
+    is_active     TINYINT(1)   NOT NULL DEFAULT 1,
+    created_at    DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    deleted_at    DATETIME     DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS bank_transactions (
+    id                BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    branch_id         INT UNSIGNED NOT NULL,
+    bank_id           INT UNSIGNED NOT NULL,
+    trx_no            VARCHAR(40) NOT NULL UNIQUE,
+    transaction_type  ENUM('transfer','setor_tunai','tarik_tunai') NOT NULL DEFAULT 'transfer',
+    account_number    VARCHAR(50)  DEFAULT NULL,
+    account_name      VARCHAR(100) DEFAULT NULL,
+    customer_id       INT UNSIGNED DEFAULT NULL,
+    customer_phone    VARCHAR(30)  DEFAULT NULL,
+    amount            DECIMAL(15,2) NOT NULL DEFAULT 0 COMMENT 'nominal uang inti transaksi',
+    cost_fee          DECIMAL(15,2) NOT NULL DEFAULT 0 COMMENT 'biaya ke pihak ketiga/aggregator, jika ada',
+    admin_fee         DECIMAL(15,2) NOT NULL DEFAULT 0 COMMENT 'biaya jasa yang dibebankan ke pelanggan',
+    profit_amount     DECIMAL(15,2) NOT NULL DEFAULT 0 COMMENT 'admin_fee - cost_fee',
+    status            ENUM('success','pending','failed','void') NOT NULL DEFAULT 'success',
+    void_reason       VARCHAR(255) DEFAULT NULL,
+    voided_by         INT UNSIGNED DEFAULT NULL,
+    voided_at         DATETIME DEFAULT NULL,
+    note              VARCHAR(255) DEFAULT NULL,
+    created_by        INT UNSIGNED DEFAULT NULL,
+    created_at        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_banktrx_branch FOREIGN KEY (branch_id) REFERENCES branches(id) ON DELETE CASCADE,
+    CONSTRAINT fk_banktrx_bank FOREIGN KEY (bank_id) REFERENCES banks(id) ON DELETE RESTRICT,
+    CONSTRAINT fk_banktrx_customer FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE SET NULL,
+    CONSTRAINT fk_banktrx_user FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL,
+    CONSTRAINT fk_banktrx_voider FOREIGN KEY (voided_by) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ---------------------------------------------------------------------
+-- 7c. SERVIS HP
+-- ---------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS service_orders (
+    id                      INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    branch_id               INT UNSIGNED NOT NULL,
+    customer_id             INT UNSIGNED NOT NULL,
+    service_no              VARCHAR(40)  NOT NULL UNIQUE,
+    device_type             VARCHAR(100) NOT NULL COMMENT 'Merk/tipe HP',
+    device_imei             VARCHAR(50)  DEFAULT NULL,
+    issue_description       VARCHAR(500) NOT NULL COMMENT 'Keluhan pelanggan',
+    accessories_note        VARCHAR(255) DEFAULT NULL COMMENT 'Kelengkapan yang dititipkan',
+    estimated_cost          DECIMAL(15,2) NOT NULL DEFAULT 0,
+    final_cost              DECIMAL(15,2) NOT NULL DEFAULT 0,
+    down_payment            DECIMAL(15,2) NOT NULL DEFAULT 0,
+    paid_amount             DECIMAL(15,2) NOT NULL DEFAULT 0,
+    status                  ENUM('received','in_progress','waiting_parts','completed','picked_up','cancelled') NOT NULL DEFAULT 'received',
+    technician_notes        VARCHAR(500) DEFAULT NULL,
+    received_date           DATE NOT NULL,
+    estimated_finish_date   DATE DEFAULT NULL,
+    completed_at            DATETIME DEFAULT NULL,
+    picked_up_at            DATETIME DEFAULT NULL,
+    created_by              INT UNSIGNED DEFAULT NULL,
+    created_at              DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at              DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_service_branch FOREIGN KEY (branch_id) REFERENCES branches(id) ON DELETE CASCADE,
+    CONSTRAINT fk_service_customer FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE RESTRICT,
+    CONSTRAINT fk_service_user FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS service_status_logs (
+    id                  BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    service_order_id    INT UNSIGNED NOT NULL,
+    status              VARCHAR(30) NOT NULL,
+    note                VARCHAR(255) DEFAULT NULL,
+    created_by          INT UNSIGNED DEFAULT NULL,
+    created_at          DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_svclog_order FOREIGN KEY (service_order_id) REFERENCES service_orders(id) ON DELETE CASCADE,
+    CONSTRAINT fk_svclog_user FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS service_payments (
+    id                  BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    service_order_id    INT UNSIGNED NOT NULL,
+    payment_date        DATE NOT NULL,
+    type                ENUM('down_payment','final_payment') NOT NULL,
+    amount              DECIMAL(15,2) NOT NULL,
+    payment_method      ENUM('cash','transfer','qris','debit') NOT NULL DEFAULT 'cash',
+    note                VARCHAR(255) DEFAULT NULL,
+    created_by          INT UNSIGNED DEFAULT NULL,
+    created_at          DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_svcpay_order FOREIGN KEY (service_order_id) REFERENCES service_orders(id) ON DELETE CASCADE,
+    CONSTRAINT fk_svcpay_user FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ---------------------------------------------------------------------
@@ -378,5 +473,8 @@ CREATE INDEX idx_loans_branch_status ON loans(branch_id, status);
 CREATE INDEX idx_audit_module_date ON audit_logs(module, created_at);
 CREATE INDEX idx_customers_branch ON customers(branch_id);
 CREATE INDEX idx_stockmove_product ON stock_movements(product_id, created_at);
+CREATE INDEX idx_banktrx_branch_date ON bank_transactions(branch_id, created_at);
+CREATE INDEX idx_service_branch_status ON service_orders(branch_id, status);
+CREATE INDEX idx_svclog_order ON service_status_logs(service_order_id, created_at);
 
 SET FOREIGN_KEY_CHECKS = 1;

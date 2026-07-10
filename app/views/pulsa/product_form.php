@@ -15,6 +15,7 @@
                         <option value="pulsa" <?= $cat === 'pulsa' ? 'selected' : '' ?>>Pulsa</option>
                         <option value="paket_data" <?= $cat === 'paket_data' ? 'selected' : '' ?>>Paket Data</option>
                         <option value="pln" <?= $cat === 'pln' ? 'selected' : '' ?>>Token PLN</option>
+                        <option value="ewallet" <?= $cat === 'ewallet' ? 'selected' : '' ?>>Top Up Saldo E-Wallet</option>
                         <option value="other" <?= $cat === 'other' ? 'selected' : '' ?>>Lainnya</option>
                     </select>
                 </div>

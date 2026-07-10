@@ -25,6 +25,8 @@ final class Router
         'pulsa'       => PulsaController::class,
         'pawn'        => PawnController::class,
         'loan'        => LoanController::class,
+        'bank'        => BankController::class,
+        'service'     => ServiceController::class,
         'reports'     => ReportController::class,
         'backup'      => BackupController::class,
         'audit-log'   => AuditLogController::class,

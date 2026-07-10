@@ -26,7 +26,15 @@
         <p class="text-muted mb-0">Rekap pinjaman uang & sisa tagihan.</p>
     </a>
     <a class="card" style="padding:1.25rem;display:block;" href="<?= e(url('reports/pulsa')) ?>">
-        <h3>Laporan Pulsa & Data</h3>
-        <p class="text-muted mb-0">Rekap transaksi pulsa dan paket data.</p>
+        <h3>Laporan Pulsa, Data &amp; Top Up</h3>
+        <p class="text-muted mb-0">Rekap transaksi pulsa, paket data, dan top up saldo e-wallet.</p>
+    </a>
+    <a class="card" style="padding:1.25rem;display:block;" href="<?= e(url('reports/bank')) ?>">
+        <h3>Laporan Transfer / Setor Tunai</h3>
+        <p class="text-muted mb-0">Rekap transaksi agen bank &amp; laba jasa layanan.</p>
+    </a>
+    <a class="card" style="padding:1.25rem;display:block;" href="<?= e(url('reports/service')) ?>">
+        <h3>Laporan Servis HP</h3>
+        <p class="text-muted mb-0">Rekap servis HP, nilai jasa, dan status pengambilan.</p>
     </a>
 </div>

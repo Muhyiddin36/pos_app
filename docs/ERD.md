@@ -32,6 +32,15 @@ erDiagram
     PULSA_PRODUCTS ||--o{ PULSA_TRANSACTIONS : "-"
     BRANCHES ||--o{ PULSA_TRANSACTIONS : "-"
 
+    BANKS ||--o{ BANK_TRANSACTIONS : "-"
+    BRANCHES ||--o{ BANK_TRANSACTIONS : "-"
+    CUSTOMERS ||--o{ BANK_TRANSACTIONS : "opsional"
+
+    BRANCHES ||--o{ SERVICE_ORDERS : "-"
+    CUSTOMERS ||--o{ SERVICE_ORDERS : "menitipkan"
+    SERVICE_ORDERS ||--o{ SERVICE_STATUS_LOGS : "-"
+    SERVICE_ORDERS ||--o{ SERVICE_PAYMENTS : "-"
+
     CUSTOMERS ||--o{ PAWNS : "menggadaikan"
     BRANCHES ||--o{ PAWNS : "-"
     PAWNS ||--o{ PAWN_PAYMENTS : "-"
@@ -57,7 +66,9 @@ erDiagram
 | `suppliers`, `purchases`, `purchase_items` | Pembelian barang ke stok |
 | `customers` | Pelanggan lintas modul (penjualan, gadai, pinjaman) |
 | `sales`, `sale_items` | Transaksi penjualan aksesoris (POS) |
-| `pulsa_products`, `pulsa_transactions` | Produk & transaksi pulsa/paket data |
+| `pulsa_products`, `pulsa_transactions` | Produk & transaksi pulsa/paket data/top up e-wallet (`category` = `pulsa`\|`paket_data`\|`pln`\|`ewallet`\|`other`) |
+| `banks`, `bank_transactions` | Master bank & transaksi transfer/setor tunai/tarik tunai (agen semua bank) |
+| `service_orders`, `service_status_logs`, `service_payments` | Servis HP: penerimaan unit, riwayat status pengerjaan, dan pembayaran (DP + pelunasan) |
 | `pawns`, `pawn_payments` | Gadai barang & pembayaran bunga/tebusan |
 | `loans`, `loan_installments`, `loan_payments` | Pinjaman uang & angsuran |
 | `audit_logs` | Jejak audit seluruh aksi penting |

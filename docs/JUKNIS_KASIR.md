@@ -3,7 +3,8 @@
 **Aplikasi**: POS Multi Usaha
 **Untuk**: Staf kasir yang melayani transaksi harian di satu cabang
 **Ruang lingkup akses**: Hanya **membuat transaksi** dan **mencetak struk**
-untuk Penjualan Aksesoris, Pulsa & Paket Data, Gadai Barang, dan Pinjam Uang.
+untuk Penjualan Aksesoris, Pulsa/Data/Top Up Saldo, Transfer/Setor Bank,
+Servis HP, Gadai Barang, dan Pinjam Uang.
 
 > **Penting**: Sebagai Kasir, Anda **tidak bisa**:
 > - Mengubah harga jual saat transaksi.
@@ -40,8 +41,8 @@ dan lanjutkan transaksi.
 
 - **Sidebar kiri**: menu navigasi. Anda hanya akan melihat menu yang memang
   diizinkan untuk Kasir (Dashboard, Kasir Aksesoris, Riwayat Penjualan,
-  Pulsa & Paket Data, Gadai Barang, Pinjam Uang, Produk, Pelanggan, Laporan
-  — sesuai pengaturan Admin Cabang Anda).
+  Pulsa/Data/Top Up, Transfer/Setor Bank, Servis HP, Gadai Barang, Pinjam
+  Uang, Produk, Pelanggan, Laporan — sesuai pengaturan Admin Cabang Anda).
 - **Pojok kanan atas**: nama Anda, role (Kasir), dan cabang tempat Anda bertugas.
 - Di layar HP/tablet sempit, sidebar tersembunyi — ketuk ikon **☰** di pojok
   kiri atas untuk membukanya.
@@ -82,22 +83,68 @@ menu Riwayat Penjualan mereka, sertakan No. Invoice dan alasan kesalahannya.
 
 ---
 
-## 4. Transaksi Pulsa & Paket Data
+## 4. Transaksi Pulsa, Paket Data & Top Up Saldo E-Wallet
 
-1. Klik menu **Pulsa & Paket Data**.
+1. Klik menu **Pulsa, Data & Top Up**.
 2. Pada form **Transaksi Baru** di bagian atas halaman:
-   - Pilih **Produk** (nominal pulsa/paket data yang diinginkan pelanggan).
-   - Isi **No. Tujuan** (nomor HP pelanggan) dengan teliti — periksa ulang sebelum submit.
+   - Pilih **Produk** — daftar dikelompokkan per jenis: Pulsa, Paket Data,
+     Token PLN, dan **Top Up E-Wallet** (Gopay, ShopeePay, OVO, DANA, dll).
+   - Isi **No. Tujuan** (nomor HP atau nomor yang terhubung ke e-wallet
+     pelanggan) dengan teliti — periksa ulang sebelum submit.
    - (Opsional) isi **Catatan**.
 3. Klik **Proses**. Struk transaksi otomatis terbuka untuk dicetak/diberikan ke pelanggan.
 4. Riwayat transaksi hari ini tampil di tabel bawah halaman yang sama.
 
-> Pastikan nomor tujuan benar sebelum klik Proses — pulsa yang sudah terkirim
-> ke nomor salah tidak dapat ditarik kembali oleh sistem ini.
+> Pastikan nomor tujuan benar sebelum klik Proses — pulsa/top up yang sudah
+> terkirim ke nomor salah tidak dapat ditarik kembali oleh sistem ini.
 
 ---
 
-## 5. Membuat Gadai Baru
+## 5. Transfer / Setor Tunai / Tarik Tunai (Agen Semua Bank)
+
+1. Klik menu **Transfer / Setor Bank**.
+2. Pilih **Jenis Transaksi**: Transfer ke Rekening Lain, Setor Tunai, atau Tarik Tunai.
+3. Pilih **Bank** dari daftar. Untuk transfer, isi **No. Rekening Tujuan**
+   dan **Nama Pemilik Rekening** — periksa ulang dengan teliti sebelum submit.
+4. Isi **Nominal Uang** yang diserahkan/ditransfer pelanggan.
+5. Kolom **Biaya Jasa/Admin** biasanya sudah terisi otomatis — biarkan sesuai
+   ketentuan cabang kecuali diarahkan lain oleh Admin Cabang.
+6. Periksa **Total Diterima dari Pelanggan** (nominal + biaya jasa) sebelum
+   klik **Proses & Cetak Struk**.
+
+> Nomor rekening dan nama pemilik yang salah dapat menyebabkan uang terkirim
+> ke orang yang salah dan **tidak dapat ditarik kembali**. Selalu konfirmasi
+> ulang ke pelanggan sebelum memproses.
+
+### Jika salah input transaksi
+
+Sama seperti modul lain, Kasir tidak bisa membatalkan sendiri. Segera
+laporkan ke Admin Cabang dengan menyebutkan No. Transaksi.
+
+---
+
+## 6. Menerima Servis HP
+
+1. Klik menu **Servis HP** → **+ Terima Servis Baru**.
+2. Pilih **Pelanggan** dari daftar, atau tambah pelanggan baru dari tautan
+   yang tersedia (isi Nama dan Telepon minimal).
+3. Isi **Merk/Tipe HP**, **Keluhan Pelanggan** (jelas dan detail, mis. "Layar
+   retak pojok kanan bawah, masih menyala"), dan **Kelengkapan yang
+   Dititipkan** (charger, sim card, dus, dll) — ini penting untuk menghindari
+   klaim kehilangan barang titipan nantinya.
+4. Isi **Perkiraan Biaya** (tanyakan ke teknisi bila belum yakin) dan
+   **Uang Muka (DP)** jika pelanggan membayar sebagian di awal.
+5. Klik **Simpan Servis**, lalu buka halaman detail dan klik **Cetak Bukti
+   Servis** — berikan struk ini ke pelanggan, karena berisi **No. Servis**
+   yang menjadi bukti wajib saat pengambilan unit nanti.
+
+**Mengubah status pengerjaan atau menyerahkan unit ke pelanggan** biasanya
+dilakukan oleh **Admin Cabang** — jika Anda diberi wewenang ini, ikuti
+panduan yang sama seperti di [`JUKNIS_ADMIN_CABANG.md`](JUKNIS_ADMIN_CABANG.md) §9.
+
+---
+
+## 7. Membuat Gadai Baru
 
 1. Klik menu **Gadai Barang** → **+ Gadai Baru**.
 2. Pilih **Pelanggan** dari daftar. Jika pelanggan belum terdaftar, klik
@@ -115,11 +162,11 @@ menu Riwayat Penjualan mereka, sertakan No. Invoice dan alasan kesalahannya.
 **Menerima pembayaran bunga, perpanjangan, atau pelunasan (tebus)**
 dari gadai yang sudah ada biasanya dilakukan oleh **Admin Cabang** — jika
 Anda diberi wewenang ini oleh Admin Cabang, ikuti panduan yang sama seperti
-di [`JUKNIS_ADMIN_CABANG.md`](JUKNIS_ADMIN_CABANG.md) §8.
+di [`JUKNIS_ADMIN_CABANG.md`](JUKNIS_ADMIN_CABANG.md) §10.
 
 ---
 
-## 6. Membuat Pinjaman Baru
+## 8. Membuat Pinjaman Baru
 
 1. Klik menu **Pinjam Uang** → **+ Pinjaman Baru**.
 2. Pilih **Pelanggan** (atau tambah pelanggan baru seperti langkah gadai di atas).
@@ -130,28 +177,31 @@ di [`JUKNIS_ADMIN_CABANG.md`](JUKNIS_ADMIN_CABANG.md) §8.
 
 **Menerima pembayaran angsuran** dari pinjaman yang sudah ada biasanya
 dilakukan oleh Admin Cabang — jika Anda diberi wewenang ini, ikuti panduan
-[`JUKNIS_ADMIN_CABANG.md`](JUKNIS_ADMIN_CABANG.md) §9.
+[`JUKNIS_ADMIN_CABANG.md`](JUKNIS_ADMIN_CABANG.md) §11.
 
 ---
 
-## 7. Melihat Riwayat Transaksi
+## 9. Melihat Riwayat Transaksi
 
 - Menu **Riwayat Penjualan** menampilkan seluruh transaksi penjualan aksesoris
   cabang Anda — berguna untuk mencari ulang transaksi lama untuk dicetak lagi
   strukturnya (klik **Cetak** di baris terkait) atau sekadar mengecek status.
+- Menu **Transfer / Setor Bank** dan **Pulsa, Data & Top Up** juga memiliki
+  daftar riwayat transaksi hari ini/terkini di bagian bawah halaman masing-masing.
 - Anda **bisa melihat** detail transaksi, tapi tombol **Batalkan Transaksi**
   hanya akan muncul untuk pengguna dengan wewenang tsb (Admin Cabang/Super Admin).
 
 ---
 
-## 8. Hal yang TIDAK Bisa Dilakukan Kasir (dan Kenapa)
+## 10. Hal yang TIDAK Bisa Dilakukan Kasir (dan Kenapa)
 
 | Yang tidak bisa dilakukan | Alasan |
 |---|---|
 | Mengubah harga jual saat transaksi | Mencegah kasir memberi harga tidak resmi tanpa sepengetahuan pemilik usaha |
-| Membatalkan (void) transaksi | Mencegah kasir "menghapus jejak" transaksi bermasalah tanpa persetujuan atasan |
+| Membatalkan (void) transaksi (penjualan/bank) | Mencegah kasir "menghapus jejak" transaksi bermasalah tanpa persetujuan atasan |
 | Melihat Laporan Laba Rugi | Informasi laba/margin usaha bersifat rahasia, hanya untuk pemilik & Admin Cabang |
-| Menghapus/mengubah data produk, supplier, kategori | Menjaga integritas data master yang dipakai seluruh cabang |
+| Menghapus/mengubah data produk, supplier, kategori, daftar bank | Menjaga integritas data master yang dipakai seluruh cabang |
+| Mengubah status servis atau menyerahkan unit tanpa izin `service.manage` | Memastikan hanya staf berwenang yang menutup transaksi servis |
 | Membuat/menghapus akun pengguna lain | Wewenang khusus Super Admin |
 
 Jika Anda merasa perlu melakukan salah satu di atas untuk pekerjaan Anda,
@@ -160,32 +210,34 @@ menyesuaikan hak akses Anda.
 
 ---
 
-## 9. Checklist Awal & Akhir Shift
+## 11. Checklist Awal & Akhir Shift
 
 **Awal shift:**
 - [ ] Login dan pastikan nama & cabang yang tampil di pojok kanan atas sudah benar.
-- [ ] Cek Dashboard sekilas — ada peringatan stok menipis yang perlu diketahui?
+- [ ] Cek Dashboard sekilas — ada peringatan stok menipis atau servis yang siap diambil?
 
 **Akhir shift:**
-- [ ] Pastikan semua transaksi hari ini sudah diproses (cek **Riwayat Penjualan**).
+- [ ] Pastikan semua transaksi hari ini sudah diproses (cek **Riwayat Penjualan**,
+      **Transfer/Setor Bank**, dan **Pulsa/Top Up**).
 - [ ] Informasikan ke Admin Cabang bila ada transaksi yang salah input dan perlu dibatalkan.
 - [ ] Logout jika perangkat kasir dipakai bergantian dengan kasir shift berikutnya (klik nama Anda → **Keluar**).
 
 ---
 
-## 10. Troubleshooting Sederhana
+## 12. Troubleshooting Sederhana
 
 | Kendala | Solusi |
 |---|---|
 | Tidak bisa login | Periksa username/password, atau tunggu 15 menit jika akun terkunci. Jika masih gagal, hubungi Admin Cabang |
 | Produk yang dicari tidak muncul | Pastikan ejaan benar, atau cek ke Admin Cabang apakah produk tsb sudah didaftarkan/masih aktif |
 | Stok produk tertulis habis padahal ada fisiknya | Laporkan ke Admin Cabang untuk penyesuaian stok, jangan memaksakan transaksi |
-| Salah input jumlah bayar/qty sebelum klik Proses | Perbaiki dulu di layar sebelum klik **Proses & Cetak Struk** — setelah diproses harus dibatalkan oleh Admin Cabang |
+| Bank tujuan tidak ada di daftar | Laporkan ke Admin Cabang/Super Admin untuk menambahkan lewat Kelola Daftar Bank |
+| Salah input jumlah bayar/qty/nominal sebelum klik Proses | Perbaiki dulu di layar sebelum diproses — setelah diproses harus dibatalkan oleh Admin Cabang |
 | Struk tidak tercetak di printer | Klik **Cetak Ulang** di halaman struk; jika printer bermasalah, cek koneksi printer/kertas |
 | Halaman keluar sendiri ke login | Sesi otomatis habis (±30 menit tanpa aktivitas) — login ulang, transaksi yang sudah tersimpan tetap aman |
 
 ---
 
-Untuk kewenangan tambahan (ubah harga, void transaksi, laporan laba), lihat
-[`JUKNIS_ADMIN_CABANG.md`](JUKNIS_ADMIN_CABANG.md). Untuk pengaturan akun,
-cabang, dan sistem, lihat [`JUKNIS_SUPER_ADMIN.md`](JUKNIS_SUPER_ADMIN.md).
+Untuk kewenangan tambahan (ubah harga, void transaksi, laporan laba, kelola
+status servis), lihat [`JUKNIS_ADMIN_CABANG.md`](JUKNIS_ADMIN_CABANG.md).
+Untuk pengaturan akun, cabang, dan sistem, lihat [`JUKNIS_SUPER_ADMIN.md`](JUKNIS_SUPER_ADMIN.md).

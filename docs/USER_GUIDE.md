@@ -5,8 +5,8 @@
 | Role | Ruang Lingkup | Hak Akses Utama |
 |---|---|---|
 | **Super Admin** | Seluruh cabang | Akses penuh: semua modul, semua cabang, laporan laba, log audit, kelola pengguna/role, backup & restore, pengaturan sistem. |
-| **Admin Cabang** | Hanya cabangnya sendiri | Penjualan, pembelian, stok, supplier, pelanggan, gadai, pinjaman, pulsa/data, laporan cabangnya sendiri (termasuk laba). |
-| **Kasir** | Hanya cabangnya sendiri | Membuat transaksi (penjualan, pulsa/data, gadai, pinjaman) dan mencetak struk saja. **Tidak dapat** mengubah harga jual saat transaksi, membatalkan (void) transaksi, atau melihat laporan laba. |
+| **Admin Cabang** | Hanya cabangnya sendiri | Penjualan, pembelian, stok, supplier, pelanggan, gadai, pinjaman, pulsa/data/top up, transfer/setor bank, servis HP, laporan cabangnya sendiri (termasuk laba). |
+| **Kasir** | Hanya cabangnya sendiri | Membuat transaksi (penjualan, pulsa/data/top up, gadai, pinjaman, transfer/setor bank, servis HP) dan mencetak struk saja. **Tidak dapat** mengubah harga jual saat transaksi, membatalkan (void) transaksi, atau melihat laporan laba. |
 
 Hak akses setiap role (kecuali Super Admin, yang selalu penuh) dapat disesuaikan
 lebih detail oleh Super Admin melalui menu **Role & Hak Akses**.
@@ -25,8 +25,9 @@ lebih detail oleh Super Admin melalui menu **Role & Hak Akses**.
 
 ## 2. Dashboard
 
-Menampilkan ringkasan transaksi hari ini (penjualan, pulsa/data), jumlah
-gadai & pinjaman aktif beserta total outstanding, serta daftar produk dengan
+Menampilkan ringkasan transaksi hari ini (penjualan, pulsa/data/top up,
+transfer/setor bank), jumlah gadai & pinjaman aktif beserta total outstanding,
+jumlah servis HP yang sedang berjalan/siap diambil, serta daftar produk dengan
 stok menipis. Kartu **Laba Hari Ini** hanya tampil untuk role yang memiliki
 izin `reports.profit` (Super Admin & Admin Cabang).
 
@@ -37,12 +38,13 @@ izin `reports.profit` (Super Admin & Admin Cabang).
 - **Role & Hak Akses** (Super Admin): sesuaikan permission Admin Cabang & Kasir.
 - **Kategori & Produk**: kelola katalog aksesoris HP beserta harga beli/jual dan stok minimum.
 - **Supplier**: data pemasok untuk transaksi pembelian.
-- **Pelanggan**: data pelanggan dipakai bersama oleh modul Penjualan, Gadai, dan Pinjaman.
+- **Pelanggan**: data pelanggan dipakai bersama oleh modul Penjualan, Gadai, Pinjaman, Transfer/Setor Bank, dan Servis HP.
+- **Daftar Bank**: master data bank untuk modul Transfer/Setor Tunai (izin `bank.manage`).
 
 > **Catatan**: Super Admin tidak terikat ke satu cabang, sehingga saat mengelola
 > produk harus memilih cabang terlebih dahulu dari dropdown di menu Produk. Untuk
-> membuat transaksi (POS, Pulsa, Gadai, Pinjaman), gunakan akun Admin Cabang/Kasir
-> karena transaksi selalu terikat ke satu cabang spesifik.
+> membuat transaksi (POS, Pulsa, Gadai, Pinjaman, Transfer/Setor Bank, Servis HP),
+> gunakan akun Admin Cabang/Kasir karena transaksi selalu terikat ke satu cabang spesifik.
 
 ## 4. Pembelian (Stok Masuk)
 
@@ -64,14 +66,44 @@ dan tercatat di riwayat pergerakan stok pada halaman edit produk.
    Penjualan → Detail** oleh pengguna dengan izin `sales.void`, dan otomatis
    mengembalikan stok.
 
-## 6. Pulsa & Paket Data
+## 6. Pulsa, Paket Data & Top Up Saldo E-Wallet
 
-Menu **Pulsa & Paket Data** menampilkan form transaksi cepat (pilih produk,
-isi nomor tujuan) di bagian atas, dan riwayat transaksi di bawahnya. Daftar
-produk (nominal, harga modal/jual per provider) dikelola terpisah melalui
-tombol **Kelola Produk** (izin `pulsa.manage_product`).
+Menu **Pulsa, Data & Top Up** menampilkan form transaksi cepat (pilih produk,
+isi nomor tujuan) di bagian atas, dan riwayat transaksi di bawahnya. Produk
+dikelompokkan per kategori (Pulsa, Paket Data, Token PLN, **Top Up E-Wallet**
+seperti Gopay/ShopeePay/OVO/DANA, dan Lainnya). Daftar produk (nominal, harga
+modal/jual per provider) dikelola terpisah melalui tombol **Kelola Produk**
+(izin `pulsa.manage_product`).
 
-## 7. Gadai Barang
+## 7. Transfer / Setor Tunai / Tarik Tunai (Agen Semua Bank)
+
+1. Menu **Transfer / Setor Bank**.
+2. Pilih **Jenis Transaksi**: Transfer ke Rekening Lain, Setor Tunai, atau Tarik Tunai.
+3. Pilih **Bank** tujuan dari daftar (dikelola Super Admin/Admin Cabang lewat **Kelola Daftar Bank**).
+4. Isi nomor rekening & nama pemilik rekening (untuk transfer), nominal uang,
+   dan **Biaya Jasa/Admin** (otomatis terisi sesuai Pengaturan Sistem, bisa disesuaikan).
+5. Klik **Proses & Cetak Struk**.
+6. Biaya jasa yang dibebankan ke pelanggan tercatat sebagai laba transaksi ini
+   (muncul di Dashboard dan Laporan Laba Rugi).
+7. Pembatalan (void) transaksi hanya dapat dilakukan oleh pengguna dengan izin
+   `bank.void` (Admin Cabang/Super Admin), dengan alasan wajib diisi.
+
+## 8. Servis HP
+
+1. Menu **Servis HP** → **Terima Servis Baru**.
+2. Pilih pelanggan, isi merk/tipe HP, keluhan, kelengkapan yang dititipkan,
+   perkiraan biaya, dan (opsional) uang muka (DP).
+3. Setelah disimpan, halaman detail menampilkan **riwayat status** dan dua aksi
+   (khusus izin `service.manage`, biasanya Admin Cabang):
+   - **Ubah Status Pengerjaan** — Dikerjakan, Menunggu Sparepart, Selesai (Siap
+     Diambil), atau Dibatalkan, masing-masing tercatat dengan waktu & catatan teknisi.
+   - **Serah Terima ke Pelanggan** — isi biaya final dan jumlah dibayar saat
+     pengambilan, sistem otomatis menghitung sisa dari uang muka yang sudah dibayar
+     dan menandai status **Sudah Diambil**.
+4. Bukti tanda terima servis dapat dicetak dari tombol **Cetak Bukti Servis**
+   segera setelah unit diterima (untuk diberikan ke pelanggan).
+
+## 9. Gadai Barang
 
 1. Menu **Gadai Barang** → **Gadai Baru**.
 2. Pilih pelanggan (atau tambah pelanggan baru dari tautan yang tersedia),
@@ -82,7 +114,7 @@ tombol **Kelola Produk** (izin `pulsa.manage_product`).
    - **Tebus Barang** — melunasi dan menutup transaksi gadai (status menjadi *redeemed*).
 4. Surat bukti gadai dapat dicetak dari tombol **Cetak Surat Gadai**.
 
-## 8. Pinjam Uang
+## 10. Pinjam Uang
 
 1. Menu **Pinjam Uang** → **Pinjaman Baru**.
 2. Isi jumlah pinjaman, bunga per bulan, dan tenor (jumlah bulan).
@@ -92,24 +124,26 @@ tombol **Kelola Produk** (izin `pulsa.manage_product`).
    sebagian/penuh. Status pinjaman otomatis berubah menjadi **Lunas** setelah
    seluruh angsuran terbayar.
 
-## 9. Laporan
+## 11. Laporan
 
 Menu **Laporan** menyediakan:
 
 - **Laporan Penjualan** — rekap transaksi per rentang tanggal, dapat diekspor ke CSV.
-- **Laporan Laba Rugi** *(khusus izin `reports.profit`)* — laba harian dari penjualan aksesoris dan pulsa/data.
+- **Laporan Laba Rugi** *(khusus izin `reports.profit`)* — laba harian dari penjualan aksesoris, pulsa/data/top up, dan transfer/setor bank.
 - **Laporan Stok** — posisi stok & nilai stok per produk, dapat diekspor ke CSV.
 - **Laporan Gadai** — daftar transaksi gadai & total outstanding pinjaman gadai.
 - **Laporan Pinjaman** — daftar pinjaman & total outstanding tagihan.
-- **Laporan Pulsa & Data** — rekap transaksi pulsa/paket data.
+- **Laporan Pulsa, Data & Top Up** — rekap transaksi pulsa/paket data/e-wallet.
+- **Laporan Transfer / Setor Tunai** — rekap transaksi agen bank & laba jasa layanan.
+- **Laporan Servis HP** — rekap servis, nilai jasa, dan status pengambilan.
 
-## 10. Log Audit
+## 12. Log Audit
 
 Setiap aksi penting (login/logout, tambah/ubah/hapus data, pembatalan transaksi,
 backup/restore) otomatis tercatat di menu **Log Audit** beserta waktu, pengguna,
 cabang, dan alamat IP — dapat difilter berdasarkan modul, cabang, dan tanggal.
 
-## 11. Backup & Restore
+## 13. Backup & Restore
 
 Lihat menu **Backup & Restore** (khusus Super Admin). Backup dibuat murni
 dengan PHP (tanpa `mysqldump`) sehingga tetap berjalan di shared hosting tanpa
@@ -117,8 +151,8 @@ akses shell. File backup dapat diunduh sebagai cadangan offline, atau
 digunakan untuk memulihkan data kapan saja. **Restore akan menimpa seluruh
 data yang ada** — selalu buat backup terbaru sebelum melakukan restore.
 
-## 12. Pengaturan Sistem
+## 14. Pengaturan Sistem
 
 Menu **Pengaturan** (khusus Super Admin) mengatur nama aplikasi, mata uang,
-zona waktu, lama timeout sesi, suku bunga default gadai/pinjaman, dan catatan
-kaki struk.
+zona waktu, lama timeout sesi, suku bunga default gadai/pinjaman, biaya admin
+default transfer/setor bank, dan catatan kaki struk.

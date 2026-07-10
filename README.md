@@ -1,10 +1,11 @@
 # POS Multi Usaha
 
 Aplikasi Point of Sale (POS) multi-usaha berbasis web untuk mengelola dalam
-satu sistem: **penjualan aksesoris HP**, **pulsa & paket data**, **gadai
-barang**, **jasa pinjam uang**, dan **multi cabang** — dirancang khusus agar
-dapat berjalan di **shared hosting standar** (tanpa SSH, Node.js, Python,
-Composer, Git, Cron Job, maupun PHP Selector khusus).
+satu sistem: **penjualan aksesoris HP**, **pulsa, paket data & top up
+saldo e-wallet**, **gadai barang**, **jasa pinjam uang**, **transfer/setor/
+tarik tunai (agen semua bank)**, **servis HP**, dan **multi cabang** —
+dirancang khusus agar dapat berjalan di **shared hosting standar** (tanpa
+SSH, Node.js, Python, Composer, Git, Cron Job, maupun PHP Selector khusus).
 
 ## Teknologi
 
@@ -21,15 +22,17 @@ Composer, Git, Cron Job, maupun PHP Selector khusus).
 **Modul fungsional**:
 
 1. Penjualan aksesoris HP (POS kasir, cetak struk, void, riwayat)
-2. Pulsa & paket data (transaksi + kelola produk provider)
+2. Pulsa, paket data & top up saldo e-wallet (Gopay/ShopeePay/OVO/DANA) — transaksi + kelola produk provider
 3. Gadai barang (buat gadai, bayar bunga/perpanjang, tebus, cetak surat gadai)
 4. Jasa pinjam uang (buat pinjaman, jadwal angsuran otomatis, pembayaran angsuran)
-5. Multi cabang (setiap transaksi & stok terikat ke satu cabang; Super Admin lintas cabang)
-6. Data master (kategori, produk, supplier, pelanggan, pembelian/stok masuk)
-7. Laporan (penjualan, laba rugi, stok, gadai, pinjaman, pulsa/data — dengan ekspor CSV)
-8. Backup & Restore database (murni PHP, tanpa `mysqldump`/SSH)
-9. Log audit (jejak seluruh aksi penting per pengguna/cabang/waktu/IP)
-10. Hak akses (RBAC berbasis permission per modul, dapat disesuaikan per role)
+5. Transfer / setor tunai / tarik tunai — agen semua bank, dengan biaya jasa sebagai laba
+6. Servis HP (penerimaan unit, timeline status pengerjaan, uang muka & pelunasan, cetak bukti servis)
+7. Multi cabang (setiap transaksi & stok terikat ke satu cabang; Super Admin lintas cabang)
+8. Data master (kategori, produk, supplier, pelanggan, pembelian/stok masuk, daftar bank)
+9. Laporan (penjualan, laba rugi, stok, gadai, pinjaman, pulsa/top up, transfer/setor bank, servis HP — dengan ekspor CSV)
+10. Backup & Restore database (murni PHP, tanpa `mysqldump`/SSH)
+11. Log audit (jejak seluruh aksi penting per pengguna/cabang/waktu/IP)
+12. Hak akses (RBAC berbasis permission per modul, dapat disesuaikan per role)
 
 **Non-fungsional**: ringan & cepat (tanpa framework berat), aman (lihat bagian
 Keamanan), responsif (mobile-first CSS), multi-user (transaksi dibungkus
@@ -62,7 +65,8 @@ awal: [`database/seed.sql`](database/seed.sql).
 │   └── js/                      # app.js (global UI), pos.js (logika kasir)
 ├── database/
 │   ├── schema.sql               # Struktur seluruh tabel (InnoDB + FK)
-│   └── seed.sql                  # Role/permission/akun awal + contoh data
+│   ├── seed.sql                  # Role/permission/akun awal + contoh data
+│   └── upgrade_2026_bank_service_ewallet.sql  # Migrasi tambahan untuk instalasi lama (lihat §6)
 ├── storage/
 │   ├── backups/                 # Hasil backup database (writable)
 │   ├── logs/                     # Log error PHP (writable)
@@ -116,6 +120,13 @@ awal: [`database/seed.sql`](database/seed.sql).
 - [`docs/API.md`](docs/API.md) — dokumentasi endpoint internal (dipakai oleh JavaScript kasir).
 - [`docs/USER_GUIDE.md`](docs/USER_GUIDE.md) — panduan penggunaan per modul & per role.
 - [`docs/JUKNIS_SUPER_ADMIN.md`](docs/JUKNIS_SUPER_ADMIN.md), [`docs/JUKNIS_ADMIN_CABANG.md`](docs/JUKNIS_ADMIN_CABANG.md), [`docs/JUKNIS_KASIR.md`](docs/JUKNIS_KASIR.md) — petunjuk teknis operasional langkah-demi-langkah, masing-masing terpisah per role, siap dicetak/dibagikan ke tim operasional.
+
+> **Instalasi lama (sudah pernah di-deploy sebelum modul Transfer/Setor Bank,
+> Servis HP, dan Top Up E-Wallet ditambahkan)?** Jalankan
+> [`database/upgrade_2026_bank_service_ewallet.sql`](database/upgrade_2026_bank_service_ewallet.sql)
+> sekali lewat phpMyAdmin (tab SQL) pada database yang sudah berjalan — aman
+> dijalankan berulang kali dan tidak akan menduplikasi data. Instalasi baru
+> tidak perlu file ini karena `schema.sql`/`seed.sql` sudah mencakup semuanya.
 
 ## 7. Login Default (setelah import `seed.sql`)
 

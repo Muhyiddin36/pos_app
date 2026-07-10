@@ -68,12 +68,25 @@ final class ReportController extends Controller
         $pulsaStmt->execute($pulsaParams);
         $pulsaProfit = $pulsaStmt->fetchAll();
 
+        $bankSql = "SELECT DATE(created_at) AS d, SUM(amount) AS omzet, SUM(profit_amount) AS laba
+                    FROM bank_transactions WHERE status = 'success' AND DATE(created_at) BETWEEN :from AND :to";
+        $bankParams = ['from' => $from, 'to' => $to];
+        if ($branchId !== null) {
+            $bankSql .= ' AND branch_id = :branch_id';
+            $bankParams['branch_id'] = $branchId;
+        }
+        $bankSql .= ' GROUP BY DATE(created_at) ORDER BY d';
+        $bankStmt = Database::connection()->prepare($bankSql);
+        $bankStmt->execute($bankParams);
+        $bankProfit = $bankStmt->fetchAll();
+
         $totalSalesProfit = array_sum(array_column($salesProfit, 'laba'));
         $totalPulsaProfit = array_sum(array_column($pulsaProfit, 'laba'));
+        $totalBankProfit = array_sum(array_column($bankProfit, 'laba'));
 
         $this->view('reports/profit', [
-            'title' => 'Laporan Laba Rugi', 'salesProfit' => $salesProfit, 'pulsaProfit' => $pulsaProfit,
-            'totalSalesProfit' => $totalSalesProfit, 'totalPulsaProfit' => $totalPulsaProfit,
+            'title' => 'Laporan Laba Rugi', 'salesProfit' => $salesProfit, 'pulsaProfit' => $pulsaProfit, 'bankProfit' => $bankProfit,
+            'totalSalesProfit' => $totalSalesProfit, 'totalPulsaProfit' => $totalPulsaProfit, 'totalBankProfit' => $totalBankProfit,
             'from' => $from, 'to' => $to,
         ]);
     }
@@ -128,11 +141,44 @@ final class ReportController extends Controller
         $transactions = PulsaTransactionModel::listForBranch($this->currentBranchId(), $from, $to);
 
         $this->view('reports/pulsa', [
-            'title' => 'Laporan Pulsa & Paket Data', 'transactions' => $transactions, 'from' => $from, 'to' => $to,
+            'title' => 'Laporan Pulsa, Data & Top Up Saldo', 'transactions' => $transactions, 'from' => $from, 'to' => $to,
             'summary' => [
                 'count' => count($transactions),
                 'omzet' => array_sum(array_column($transactions, 'sale_price')),
                 'profit' => array_sum(array_column($transactions, 'profit_amount')),
+            ],
+        ]);
+    }
+
+    public function bank(): void
+    {
+        $this->requirePermission('reports.view');
+        [$from, $to] = $this->dateRange();
+        $transactions = BankTransactionModel::listForBranch($this->currentBranchId(), $from, $to);
+        $transactions = array_values(array_filter($transactions, fn ($t) => $t['status'] !== 'void'));
+
+        $this->view('reports/bank', [
+            'title' => 'Laporan Transfer / Setor Tunai', 'transactions' => $transactions, 'from' => $from, 'to' => $to,
+            'summary' => [
+                'count'  => count($transactions),
+                'amount' => array_sum(array_column($transactions, 'amount')),
+                'profit' => array_sum(array_column($transactions, 'profit_amount')),
+            ],
+        ]);
+    }
+
+    public function service(): void
+    {
+        $this->requirePermission('reports.view');
+        $status = $this->get('status');
+        $orders = ServiceOrderModel::listForBranch($this->currentBranchId(), $status);
+
+        $this->view('reports/service', [
+            'title'  => 'Laporan Servis HP', 'orders' => $orders, 'status' => $status,
+            'summary' => [
+                'count'      => count($orders),
+                'final_cost' => array_sum(array_column($orders, 'final_cost')),
+                'paid'       => array_sum(array_column($orders, 'paid_amount')),
             ],
         ]);
     }
